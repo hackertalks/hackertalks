@@ -1,0 +1,3 @@
+include hackertalks/config/deployment.ini_tmpl
+recursive-include hackertalks/public *
+recursive-include hackertalks/templates *
