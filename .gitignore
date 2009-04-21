@@ -1,4 +1,4 @@
 *.pyc
 *.pyo
 mydevenv/
-hackertalks/hackertalks.egg-info/
+hackertalks.egg-info/
