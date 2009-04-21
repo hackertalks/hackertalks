@@ -19,6 +19,7 @@ setup(
         "psycopg2",
         "docutils>=0.5",
         "sqlalchemy-migrate>=0.5.3",
+	"elixir",
     ],
     setup_requires=["PasteScript>=1.6.3"],
     packages=find_packages(exclude=['ez_setup']),
