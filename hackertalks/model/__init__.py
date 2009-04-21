@@ -13,7 +13,7 @@ def init_model(engine):
     #                           autoload_with=engine)
     #orm.mapper(Reflected, reflected_table)
     #
-    meta.Session.configure(bind=engine)
+    meta.metadata.bind=engine
     meta.engine = engine
 
 from entities import *
