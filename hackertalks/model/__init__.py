@@ -5,6 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from hackertalks.model import meta
 
+Base = meta.Base
+
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
     ## Reflected tables must be defined and mapped here
@@ -15,10 +17,8 @@ def init_model(engine):
     #
     meta.Session.configure(bind=engine)
     meta.engine = engine
+    meta.metadata.bind = engine
 
-
-Base = declarative_base()
-Base.metadata = meta.metadata
 
 talks_tags_table = sa.Table('talks_tags', meta.metadata,
     sa.Column('talk_id', sa.types.Integer, sa.ForeignKey('talks.id'), primary_key=True),
