@@ -112,3 +112,40 @@ class Talk(Base):
 
     def __repr__(self):
         return "<Talk('%s', '%s', '%s', '%s', '%s')>" % (self.title, self.description, self.video_length, self.video_embedcode, self.language.name)
+    
+    def gettitle(self):
+        if (self.title == None):
+            return (u'undefined')
+        else:
+            return (self.title)
+    def getdescription(self):
+        if (self.description == None):
+            return (u'undefined')
+        else:
+            return (self.description)
+    def getvideo_length(self):
+        if (self.video_length == None):
+            return (datetime.timedelta(0))
+        else:
+            return (self.video_length)
+    def getvideo_embedcode(self):
+        if (self.video_embedcode == None):
+            return (u'undefined')
+        else:
+            return (self.video_embedcode)
+    def getlanguage(self):
+        if (self.title == None):
+            return (meta.Session.query(Language).get('XX'))
+        else:
+            return (self.language)
+    def get(self, requested=None):
+	returnarray = dict()
+	returnarray['title'] = self.gettitle()
+        returnarray['description'] = self.getdescription()
+        returnarray['video_length'] = self.getvideo_length()
+        returnarray['video_embedcode'] = self.getvideo_embedcode()
+        returnarray['language'] = self.getlanguage().name
+        if (requested == None):
+            return (returnarray)
+        else:
+            return (returnarray[requested])

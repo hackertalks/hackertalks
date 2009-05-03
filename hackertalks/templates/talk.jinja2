@@ -14,6 +14,8 @@
 		{%- endfor %} <br />
 		Video Length = {{c.talk.video_length}} <br />
 		Video Embedcode = {{c.talk.video_embedcode}} <br />
+		General = {{ c.talk.get() }} <br />
+		Test = {{ c.talk.get('title') }} <br />
 		Tags = 
 		<ul>
 			{% for tag in c.talk.tags -%}
