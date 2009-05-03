@@ -13,6 +13,8 @@ log = logging.getLogger(__name__)
 class TalkController(BaseController):
 
     def index(self, id):
-        # Return a rendered template
 	c.talk = Session.query(Talk).get(id)
-        return render('/talk.jinja2')
+        if (c.talk == None):
+	    return render('/fourohfour.jinja2')
+	else:
+	    return render('/talk.jinja2')
