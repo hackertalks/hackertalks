@@ -2,7 +2,7 @@
 import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.ext.declarative import declarative_base
-from datetime import datetime
+import datetime
 
 from hackertalks.model import meta
 
@@ -103,11 +103,12 @@ class Talk(Base):
     tags =  orm.relation('Tag', secondary=talks_tags_table, backref='talks')
     speakers = orm.relation('Speaker', secondary=talks_speakers_table, backref='talks')
 
-    def __init__(self, title, description, language_code, length):
+    def __init__(self, title = u'undefined', description = u'undefined', language_code = u'XX', video_length = datetime.timedelta(0), video_embedcode = u' '):
         self.title = title
         self.description = description
-        self.length = length
+        self.video_length = video_length
+	self.video_embedcode = video_embedcode
+	self.language_code = language_code
 
     def __repr__(self):
-        return "<Talk('%s', '%s', '%s', '%s', '%s')>" % (self.title, self.description, self.length, self.type, self.language)
-
+        return "<Talk('%s', '%s', '%s', '%s', '%s')>" % (self.title, self.description, self.video_length, self.video_embedcode, self.language.name)
