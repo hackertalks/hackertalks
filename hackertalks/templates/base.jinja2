@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	{% block head %}
+	<link rel="stylesheet" href="/style.css" />
+	<title>{% block title %}{% endblock %} - HackerTalks</title>
+	{% endblock %}
+
+</head>
+
+<body>
+	<div id=container>
+		<div class=header>
+		</div>
+	</div>
+	<div id=bar>
+		<div id=container>
+			<div class=menu>
+				<ul>
+					<li><a href='search'>search</a></li>
+					<li><a href='stumble'>stumble</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div id=container>
+		{% block content %}
+		{% endblock content %}
+	</div>
+</body>
+</html>
