@@ -16,7 +16,6 @@ setup(
         "Pylons>=0.9.7",
         "SQLAlchemy>=0.5",
         "Jinja2",
-        "psycopg2",
         "docutils>=0.5",
         "sqlalchemy-migrate>=0.5.3",
     ],

@@ -1,0 +1,20 @@
+{% extends "base.jinja2" %}
+
+{% block title %}Talk Index{% endblock %}
+
+{% block head -%}
+{{ super() }}
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="{{h.url_for(controller='talks', action='feed', type='rss') }}" />
+{% endblock head %}
+
+{% block content %}
+	<p>{{ c.talks.count() }} new blog posts!</p>
+	{% for talk in c.talks -%}
+	<p class="content" style="border-style:solid;border-width:1px">
+        	<span class="h3"> {{talk.subject}} </span>
+        	<span class="h4">Posted on: {{talk.date}} by {{talk.author}}</span>
+        	<br />
+        	{{talk.content}}
+	</p>
+	{%- endfor %}
+{% endblock %}
