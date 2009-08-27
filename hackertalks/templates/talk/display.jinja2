@@ -1,0 +1,27 @@
+{% extends "base.jinja2" %}
+
+{% block title -%}
+	{{ c.talk.title }}
+{%- endblock title %}
+
+{% block content -%}
+	<h1> {{ c.talk.title }} info! </h1>
+	<p>
+		Language = {{c.talk.language.name}} <br />
+		Description = {{c.talk.description}} <br />
+		Speakers = {% for speaker in c.talk.speakers -%}
+		{{ h.link_to(speaker.nickname, h.url_for(controller='speaker', action='display', id=speaker.id)) }}
+		{%- endfor %} <br />
+		Video Length = {{c.talk.video_length}} <br />
+		Video Embedcode = {{c.talk.video_embedcode}} <br />
+		General = {{ c.talk.get() }} <br />
+		Test = {{ c.talk.get('title') }} <br />
+		Tags = 
+		<ul>
+			{% for tag in c.talk.tags -%}
+			</li> {{ tag.tag }}, </li>
+			{%- endfor %}
+		</ul>
+	</p>
+{%- endblock content %}
+

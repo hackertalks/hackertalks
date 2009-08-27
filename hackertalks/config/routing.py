@@ -19,7 +19,12 @@ def make_map():
     map.connect('/error/{action}/{id}', controller='error')
 
     # CUSTOM ROUTES HERE
-    map.connect('talk', '/talk/{id}', controller='talk', action='index')
+    map.connect('talkindex', '/talk', controller='talk', action='index')
+    map.connect('talk', '/talk/{id}', controller='talk', action='display')
+    
+    map.connect('speakerindex', '/speaker', controller='speaker', action='index')
+    map.connect('speaker', '/speaker/{id}', controller='speaker', action='display')
+    
     map.connect('/{controller}', action='index')
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')

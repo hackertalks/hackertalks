@@ -1,4 +1,11 @@
 *.pyc
 *.pyo
 mydevenv/
-hackertalks.egg-info/
+dist/
+build/
+*.egg-info/
+*.egg
+.project
+.pydevproject
+development.db
+development.ini
