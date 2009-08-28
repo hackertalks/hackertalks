@@ -124,7 +124,7 @@ body {
     float: left;
     width: 480px;
     height: 270px;
-    background-image: url('images/bre_preview.jpg');
+    background-color: #000000;
     margin: 20px 0 20px 0;
 }
 
