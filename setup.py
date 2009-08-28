@@ -35,5 +35,8 @@ setup(
 
     [paste.app_install]
     main = pylons.util:PylonsInstaller
+    
+    [paste.paster_command]
+    upload_dir = hackertalks.commands.upload_dir:Upload_Dir
     """,
 )
