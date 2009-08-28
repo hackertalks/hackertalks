@@ -6,17 +6,21 @@
 	<div id=feat_box>
 		<div class=container>
 			<div class=feat_preview>
-				<img src='{% c.featured_talks[0].thumbnail_url %}' />
+				<img src='{{ c.featured_talks[0].thumbnail_url }}' width='480' />
 			</div>
 			<div class=feat_titlebar>
-				Featured: {% h.smart_truncate(c.featured_talks[0].short_title, 34) %}
+				Featured: {{ h.smart_truncate(c.featured_talks[0].short_title, 34) }}
 			</div>
 			<div class=feat_info>
-				<h2>{% c.featured_talks[0].title %}</h2>
-				<p>{% c.featured_talks[0].speaker.name %} {% if c.featured_talks[0].speaker.job_title -%}{% c.featured_talks[0].speaker.job_title %}{%- endif %}</p>
-				<p>{% c.featured_talks[0].recording_date %}<br />
-				{% h.format_duration(c.featured_talks[0].video_duration) %}</p>
-				<p>{% h.smart_truncate(c.featured_talks[0].description, 134) %}</p>
+				<h2>{{ c.featured_talks[0].title }}</h2>
+				<p>
+					{% for speaker in c.featured_talks[0].speakers %}
+						{{ speaker.name }} {% if speaker.job_title -%}{{ speaker.job_title }}{%- endif %}<br />
+					{% endfor %}
+				</p>
+				<p>{{ c.featured_talks[0].recording_date }}<br />
+				{{ h.format_duration(c.featured_talks[0].video_duration) }}</p>
+				<p>{{ h.smart_truncate(c.featured_talks[0].description, 134) }}</p>
 			</div>
 		</div>
 	</div>
@@ -27,14 +31,16 @@
 			{% for talk in c.featured_talks[1:7] -%}
 			
 			<div class=result_preview>
-				<img src='{% talk.thumbnail_url %}' />
+				<img src='{{ talk.thumbnail_url }}' width='70' />
 			</div>
 			<div class=result_txt>
 				<h2 class=result_title>
-					{% h.smart_truncate(talk.title, 64) %}<br />
+					{{ h.smart_truncate(talk.title, 64) }}<br />
 				</h2>
-				{% h.smart_truncate(talk.description, 96) %}<br />
-				{% talk.speaker.name %} {% if talk.speaker.job_title -%}{% talk.speaker.job_title %}{%- endif %}
+				{{ h.smart_truncate(talk.description, 96) }}<br />
+				{% for speaker in talk.speakers %}
+					{{ speaker.name }} {% if speaker.job_title -%}{{ speaker.job_title }}{%- endif %}<br />
+				{% endfor %}
 			</div>
 			
 			{%- endfor %}

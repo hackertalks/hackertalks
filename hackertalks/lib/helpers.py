@@ -15,3 +15,12 @@ def smart_truncate(content, length=100, suffix='...'):
         return content
     else:
         return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix
+
+def format_duration(delta):
+    seconds = delta.seconds
+    minutes = seconds / 60
+    
+    if minutes >= 60:
+        return '%d:%02d h' % (minutes / 60, minutes % 60)
+    else:
+        return '%d:%02d min' % (minutes, seconds % 60)

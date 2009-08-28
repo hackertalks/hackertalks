@@ -17,8 +17,10 @@ def make_map():
     # likely stay at the top, ensuring it can always be resolved
     map.connect('/error/{action}', controller='error')
     map.connect('/error/{action}/{id}', controller='error')
-
+    
     # CUSTOM ROUTES HERE
+    map.connect('/', controller='frontpage', action='index')
+    
     map.connect('talkindex', '/talk', controller='talk', action='index')
     map.connect('talk', '/talk/{id}', controller='talk', action='display')
     
