@@ -15,7 +15,7 @@
 				<h2>{{ c.featured_talks[0].title }}</h2>
 				<p>
 					{% for speaker in c.featured_talks[0].speakers %}
-						{{ speaker.name }} {% if speaker.job_title -%}{{ speaker.job_title }}{%- endif %}<br />
+						{{ speaker.name }} {% if speaker.job_title -%}({{ speaker.job_title }}){%- endif %}<br />
 					{% endfor %}
 				</p>
 				<p>{{ c.featured_talks[0].recording_date }}<br />
@@ -37,9 +37,9 @@
 				<h2 class=result_title>
 					{{ h.smart_truncate(talk.title, 64) }}<br />
 				</h2>
-				{{ h.smart_truncate(talk.description, 96) }}<br />
+				{{ h.smart_truncate(talk.description, 90) }}<br />
 				{% for speaker in talk.speakers %}
-					{{ speaker.name }} {% if speaker.job_title -%}{{ speaker.job_title }}{%- endif %}<br />
+					{{ speaker.name }}{% if speaker.job_title -%} {{ speaker.job_title }}{%- endif %},
 				{% endfor %}
 			</div>
 			
