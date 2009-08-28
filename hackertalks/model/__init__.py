@@ -10,142 +10,55 @@ Base = meta.Base
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
-    ## Reflected tables must be defined and mapped here
-    #global reflected_table
-    #reflected_table = sa.Table("Reflected", meta.metadata, autoload=True,
-    #                           autoload_with=engine)
-    #orm.mapper(Reflected, reflected_table)
-    #
     meta.Session.configure(bind=engine)
     meta.engine = engine
     meta.metadata.bind = engine
-
-
-talks_tags_table = sa.Table('talks_tags', meta.metadata,
-    sa.Column('talk_id', sa.types.Integer(), sa.ForeignKey('talks.id'), primary_key=True),
-    sa.Column('tag_id', sa.types.Integer(), sa.ForeignKey('tags.id'), primary_key=True),
-    )
 
 talks_speakers_table = sa.Table('talks_speakers', meta.metadata,
     sa.Column('talk_id', sa.types.Integer(), sa.ForeignKey('talks.id'), primary_key=True),
     sa.Column('speaker_id', sa.types.Integer(), sa.ForeignKey('speakers.id'), primary_key=True),
     )
 
-class TalkType(Base):
-    __tablename__ = 'talk_types'
-
-    id = sa.Column(sa.types.Integer(), primary_key=True)
-    type = sa.Column(sa.types.Unicode())
-
-    def __init__(self, type):
-        self.type = type
-
-    def __repr__(self):
-        return "<TalkType('%s')>" % (self.type)
-
-
-class Tag(Base):
-    __tablename__ = 'tags'
-
-    id = sa.Column(sa.types.Integer(), primary_key=True)
-    tag = sa.Column(sa.types.Unicode())
-
-    def __init__(self, tag):
-        self.tag = tag
-
-    def __repr__(self):
-        return "<Tag('%s')>" % (self.tag)
-
 class Speaker(Base):
     __tablename__ = 'speakers'
 
-    id = sa.Column(sa.types.Integer(), primary_key=True)
-    first_name = sa.Column(sa.types.Unicode())
-    last_name = sa.Column(sa.types.Unicode())
-    nickname = sa.Column(sa.types.Unicode())
+    id = sa.Column(sa.types.Integer, primary_key=True)
+    name = sa.Column(sa.types.Unicode)
+    job_title = sa.Column(sa.types.Unicode)
 
-    def __init__(self, first_name, last_name, nickname):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.nickname = nickname
-
-    def __repr__(self):
-            return "<Speaker('%s',  '%s', '%s')>" % (self.first_name, self.last_name, self.nickname)
-
-class Language(Base):
-    __tablename__ = 'languages'
-
-    code = sa.Column(sa.types.Unicode(), primary_key=True)
-    name = sa.Column(sa.types.Unicode())
-
-    def __init__(self, code, name):
-        self.code = code
+    def __init__(self, name, job_title):
         self.name = name
+        self.job_title = job_title
 
     def __repr__(self):
-        return "<Lanuage('%s', '%s')>" % (self.code, self.name)
+        return "<Speaker(id='%d', name='%s')>" % (self.id, self.name)
 
 class Talk(Base):
     __tablename__ = 'talks'
 
-    id = sa.Column(sa.types.Integer(), primary_key=True)
-    title = sa.Column(sa.types.Unicode())
-    description = sa.Column(sa.types.UnicodeText())
-    video_length = sa.Column(sa.types.Interval())
-    video_embedcode = sa.Column(sa.types.Unicode())
-    # Many To One Columns
-    language_code = sa.Column(sa.types.Unicode(), sa.ForeignKey('languages.code'))
-    type_id = sa.Column(sa.types.Integer(), sa.ForeignKey('talk_types.id'))
-    #Many to One Relationships
-    type = orm.relation(TalkType, backref=orm.backref('talk_types', order_by=id))
-    language = orm.relation(Language, backref=orm.backref('languages', order_by=id))
-    #Many to Many  Relationships
-    tags =  orm.relation('Tag', secondary=talks_tags_table, backref='talks')
+    id = sa.Column(sa.types.Integer, primary_key=True)
+    short_title = sa.Column(sa.types.Unicode)
+    title = sa.Column(sa.types.UnicodeText)
+    description = sa.Column(sa.types.UnicodeText)
+    thumbnail_url = sa.Column(sa.types.UnicodeText)
+    recording_date = sa.Column(sa.types.Date)
+    license = sa.Column(sa.types.UnicodeText)
+    video_duration = sa.Column(sa.types.Interval)
+    video_embedcode = sa.Column(sa.types.UnicodeText)
+    video_bliptv_id = sa.Column(sa.types.Integer)
+    
     speakers = orm.relation('Speaker', secondary=talks_speakers_table, backref='talks')
 
-    def __init__(self, title = u'undefined', description = u'undefined', language_code = u'XX', video_length = datetime.timedelta(0), video_embedcode = u' '):
+    def __init__(self, short_title, title, description, thumbnail_url, recording_date, license, video_duration, video_embedcode, video_bliptv_id):
+        self.short_title = short_title
         self.title = title
         self.description = description
-        self.video_length = video_length
-	self.video_embedcode = video_embedcode
-	self.language_code = language_code
+        self.thumbnail_url = thumbnail_url
+        self.recording_date = recording_date
+        self.license = license
+        self.video_duration = video_duration
+        self.video_embedcode = video_embedcode
+        self.video_bliptv_id = video_bliptv_id
 
     def __repr__(self):
-        return "<Talk('%s', '%s', '%s', '%s', '%s')>" % (self.title, self.description, self.video_length, self.video_embedcode, self.language.name)
-    
-    def gettitle(self):
-        if (self.title == None):
-            return (u'undefined')
-        else:
-            return (self.title)
-    def getdescription(self):
-        if (self.description == None):
-            return (u'undefined')
-        else:
-            return (self.description)
-    def getvideo_length(self):
-        if (self.video_length == None):
-            return (datetime.timedelta(0))
-        else:
-            return (self.video_length)
-    def getvideo_embedcode(self):
-        if (self.video_embedcode == None):
-            return (u'undefined')
-        else:
-            return (self.video_embedcode)
-    def getlanguage(self):
-        if (self.title == None):
-            return (meta.Session.query(Language).get('XX'))
-        else:
-            return (self.language)
-    def get(self, requested=None):
-	returnarray = dict()
-	returnarray['title'] = self.gettitle()
-        returnarray['description'] = self.getdescription()
-        returnarray['video_length'] = self.getvideo_length()
-        returnarray['video_embedcode'] = self.getvideo_embedcode()
-        returnarray['language'] = self.getlanguage().name
-        if (requested == None):
-            return (returnarray)
-        else:
-            return (returnarray[requested])
+        return "<Talk(id='%s', title='%s', video_bliptv_id='%s')>" % (self.id, self.title, self.video_bliptv_id)
