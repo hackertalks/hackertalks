@@ -44,7 +44,6 @@ body {
     padding: 0;
 	margin: 0;
     color: #FFFFFF;
-	overflow: hidden;
 }
 
 .menu li {
@@ -58,10 +57,23 @@ body {
     height: 23px;
 	padding-top: 3px;
 	border-right: 1px solid #fff;
+	position: relative;
 }
 
 .menu li.search {
 	border-left: 1px solid #fff;
+}
+
+.menu li.stumble {
+	width: 349px;
+}
+
+.menu li.search:hover {
+	background-image: url('images/search_bg_hover.png');
+}
+
+.menu li.stumble:hover {
+	background-image: url('images/search_bg_hover.png');
 }
 
 .menu a {
@@ -70,8 +82,34 @@ body {
     border-bottom: none;
 }
 
-.menu a:hover {
-    
+#search_container {
+	display: none;
+	position: absolute;
+	left: -1px;
+	top: 23px;
+	background-image: url('images/search_box.png');
+	width: 700px;
+	height: 132px;
+	z-index: 1;
+}
+
+#stumble_container {
+	display: none;
+	position: absolute;
+	right: -1px;
+	top: 23px;
+	background-image: url('images/stumble_box.png');
+	width: 700px;
+	height: 132px;
+	z-index: 1;
+}
+
+.menu li:hover #search_container {
+    display: block;
+}
+
+.menu li:hover #stumble_container {
+	display: block;
 }
 
 #feat_box {
@@ -86,7 +124,7 @@ body {
     float: left;
     width: 480px;
     height: 270px;
-    background-color: #000000;
+    background-image: url('images/bre_preview.jpg');
     margin: 20px 0 20px 0;
 }
 
@@ -157,7 +195,7 @@ p {
     float: left;
     width: 80px;
     height: 46px;
-    background-color: #000000;;
+    background-color: #000000;
 }
 
 /*h1 {
