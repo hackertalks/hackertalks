@@ -88,9 +88,12 @@ body {
 	left: -1px;
 	top: 23px;
 	background-image: url('images/search_box.png');
+	background-repeat: no-repeat;
 	width: 700px;
 	height: 132px;
 	z-index: 1;
+	text-align: left;
+	padding: 28px 40px;
 }
 
 #stumble_container {
@@ -240,3 +243,16 @@ ul li {
     display: inline;
     line-height: 18px;
 }
+
+#form {
+	margin-top: -10px;
+}
+
+#form input {
+	font-size: 12pt;
+}
+
+#form input.search {
+	padding: 2px;
+}
+

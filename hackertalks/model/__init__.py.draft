@@ -91,7 +91,7 @@ class Talk(Base):
     id = sa.Column(sa.types.Integer(), primary_key=True)
     title = sa.Column(sa.types.Unicode())
     description = sa.Column(sa.types.UnicodeText())
-    video_length = sa.Column(sa.types.Interval())
+    video_duration = sa.Column(sa.types.Interval())
     video_embedcode = sa.Column(sa.types.Unicode())
     # Many To One Columns
     language_code = sa.Column(sa.types.Unicode(), sa.ForeignKey('languages.code'))
@@ -103,21 +103,21 @@ class Talk(Base):
     tags =  orm.relation('Tag', secondary=talks_tags_table, backref='talks')
     speakers = orm.relation('Speaker', secondary=talks_speakers_table, backref='talks')
 
-    def __init__(self, title = u'undefined', description = u'undefined', language_code = u'XX', video_length = datetime.timedelta(0), video_embedcode = u' '):
+    def __init__(self, title = u'undefined', description = u'undefined', language_code = u'XX', video_duration = datetime.timedelta(0), video_embedcode = u' '):
         self.title = title
         self.description = description
-        self.video_length = video_length
+        self.video_duration = video_duration
 	self.video_embedcode = video_embedcode
 	self.language_code = language_code
 
     def __repr__(self):
-        return "<Talk('%s', '%s', '%s', '%s', '%s')>" % (self.title, self.description, self.video_length, self.video_embedcode, self.language.name)
+        return "<Talk('%s', '%s', '%s', '%s', '%s')>" % (self.title, self.description, self.video_duration, self.video_embedcode, self.language.name)
     
-    def getvideo_length(self):
-        if (self.video_length == None):
+    def getvideo_duration(self):
+        if (self.video_duration == None):
             return (datetime.timedelta(0))
         else:
-            return (self.video_length)
+            return (self.video_duration)
     def getlanguage(self):
         if (self.title == None):
             return (meta.Session.query(Language).get('XX'))
@@ -134,7 +134,7 @@ class Talk(Base):
     def get(self, requested=None):
 	returnarray = dict()
 	returnarray['title', 'description', 'video_embedcode'] = self.getvalue()
-        returnarray['video_length'] = self.getvideo_length()
+        returnarray['video_duration'] = self.getvideo_duration()
         returnarray['language'] = self.getlanguage().name
         if (requested == None):
             return (returnarray)
