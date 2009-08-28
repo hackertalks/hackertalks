@@ -6,6 +6,7 @@ html {
 }
 
 body {
+	margin: 0;
     font-family: Helvetica, Arial, sans-serif;
     font-weight: normal;
     font-size: 10.5pt;
@@ -13,7 +14,7 @@ body {
     text-align: center;
 }
 
-#container {
+.container {
     position: relative;
     width: 700px;
     margin: 0 auto;
@@ -22,7 +23,7 @@ body {
 
 .header {
     position: relative;
-    height: 46px;
+    height: 54px;
     background-image: url('images/logo.png');
     background-repeat: no-repeat;
     background-align: left;
@@ -33,21 +34,34 @@ body {
     position: relative;
     height: 23px;
     background-image: url('images/bar.png');
+	margin: 0 auto;
 }
 
 .menu {
     line-height: 0px;
     font-weight: bold;
     text-align: center;
-    padding: 0 0 0 0;
+    padding: 0;
+	margin: 0;
     color: #FFFFFF;
+	overflow: hidden;
 }
 
 .menu li {
     list-style: none;
-    display: inline;
-    line-height: 22px;
-    padding: 0 139px 0 139px;
+	float: left;
+	display: block;
+	width: 348px;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+    height: 23px;
+	padding-top: 3px;
+	border-right: 1px solid #fff;
+}
+
+.menu li.search {
+	border-left: 1px solid #fff;
 }
 
 .menu a {
@@ -62,9 +76,10 @@ body {
 
 #feat_box {
     position: relative;
-    height: 320px;
+    height: 347px;
     background-image: url('images/featured_box.png');
-    border: 1px solid #000000;
+	background-repeat: repeat-x;
+	background-position: top;
 }
 
 .feat_preview {
@@ -76,48 +91,73 @@ body {
 }
 
 .feat_titlebar {
-    float: right;
-    background-image: url('images/feat_titlebar.png');
-    margin: 20px 0 20px 0;
-    padding: 10px 5px 10px 5px;
+    right: 0;
+    background-image: url('images/feat_title_bg.png');
+	position: absolute;
+    margin: 29px 0 20px 0;
+    padding: 8px 13px 5px 13px;
     font-size: 20px;
     font-weight: bold;
     color: #000000;
     text-align: right;
-    border: 1px solid #000000;    
 }
 
 .feat_info {
+	float: right;
     text-align: right;
     font-size: 12px;
+	line-height: 14px;
+	color: #FFFFFF;
+	margin-top: 76px;
+	width: 210px;
 }
 
-#sheet {
+#sheet_container {
+	background-image: url('images/feat_box_bottom_shadow.png');
+	background-color: #FFFFFF;
+	background-repeat: repeat-x;
+	margin-top: -24px;
+	border-right: 2px solid #333333;
+	border-bottom: 3px solid #333333;
+	padding-top: 25px;
+}
+
+.sheet {
     height: 45px;
-    background-color: #FFFFFF;
-    padding: 20px 20px 20px 20px;
-    /*border: 1px solid #000000;
-    /*background-image: url('images/sheet_h-shade.png');
-    background-align: right;*/
+    padding: 0px 20px 20px 20px;
+/*    background-image: url('images/sheet_h-shade.png');
+    background-align: right;
+	margin-right: -10px;	*/
+/*	margin-top: -40px;*/
+	z-index: -1;
 }
 
 #footer {
     margin-top: 20px;
     font-size: 9px;
-    color: #000000;
+    color: #333333;
 }
 
 p {
     line-height: 18px;
     padding: 10px 0 10px 0;
-    border: 1px dotted #000000;
+}
+
+#feat_box p {
+	padding: 0;
+}
+
+.feat_info h2 {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 16px;
 }
 
 .result_preview {
     float: left;
     width: 80px;
     height: 46px;
-    background-color: #000000;
+    background-color: #000000;;
 }
 
 /*h1 {
@@ -135,14 +175,17 @@ h2 {
 
 .result_txt {
     width: 540px;
-    border: 1px dotted #000000;
     float: right;
+	font-size: 12px;
+	line-height: 14px;
 }
 
 h2.result_title {
     font-size: 14px;
     font-weight: bold;
     color: #666666;
+	margin: 0;
+	margin-bottom: 6px;
 }
 
 a {
