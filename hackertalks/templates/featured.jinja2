@@ -1,0 +1,44 @@
+{% extends "base.jinja2" %}
+
+{% block title %}Featured{% endblock %}
+
+{% block content %}
+	<div id=feat_box>
+		<div class=container>
+			<div class=feat_preview>
+				<img src='{% c.featured_talks[0].thumbnail_url %}' />
+			</div>
+			<div class=feat_titlebar>
+				Featured: {% h.smart_truncate(c.featured_talks[0].short_title, 34) %}
+			</div>
+			<div class=feat_info>
+				<h2>{% c.featured_talks[0].title %}</h2>
+				<p>{% c.featured_talks[0].speaker.name %} {% if c.featured_talks[0].speaker.job_title -%}{% c.featured_talks[0].speaker.job_title %}{%- endif %}</p>
+				<p>{% c.featured_talks[0].recording_date %}<br />
+				{% h.format_duration(c.featured_talks[0].video_duration) %}</p>
+				<p>{% h.smart_truncate(c.featured_talks[0].description, 134) %}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class=container id=sheet_container>
+		<div class=sheet>
+			
+			{% for talk in c.featured_talks[1:7] -%}
+			
+			<div class=result_preview>
+				<img src='{% talk.thumbnail_url %}' />
+			</div>
+			<div class=result_txt>
+				<h2 class=result_title>
+					{% h.smart_truncate(talk.title, 64) %}<br />
+				</h2>
+				{% h.smart_truncate(talk.description, 96) %}<br />
+				{% talk.speaker.name %} {% if talk.speaker.job_title -%}{% talk.speaker.job_title %}{%- endif %}
+			</div>
+			
+			{%- endfor %}
+			
+		</div>
+	</div>
+{% endblock %}
