@@ -22,7 +22,7 @@ talks_speakers_table = sa.Table('talks_speakers', meta.metadata,
 class Speaker(Base):
     __tablename__ = 'speakers'
 
-    id = sa.Column(sa.types.Integer, primary_key=True)
+    id = sa.Column(sa.types.Integer(), primary_key=True)
     name = sa.Column(sa.types.Unicode())
     job_title = sa.Column(sa.types.Unicode())
 
@@ -36,7 +36,7 @@ class Speaker(Base):
 class License(Base):
     __tablename__ = 'licenses'
     
-    id = sa.Column(sa.types.Integer, primary_key=True)
+    id = sa.Column(sa.types.Integer(), primary_key=True)
     name = sa.Column(sa.types.Unicode())
     shortname = sa.Column(sa.types.Unicode())
     abbreviation = sa.Column(sa.types.Unicode())
@@ -62,7 +62,7 @@ class License(Base):
 class Talk(Base):
     __tablename__ = 'talks'
 
-    id = sa.Column(sa.types.Integer, primary_key=True)
+    id = sa.Column(sa.types.Integer(), primary_key=True)
     short_title = sa.Column(sa.types.Unicode())
     title = sa.Column(sa.types.Unicode())
     description = sa.Column(sa.types.UnicodeText())
@@ -73,7 +73,7 @@ class Talk(Base):
     video_bliptv_id = sa.Column(sa.types.Integer())
 
     ## We need a set list of licenses because they MUST be the same as where the videos are stored.
-    license = orm.relation(license, backref=orm.backref('licenses', order_by=id))
+    license = sa.Column(sa.types.Integer(), sa.ForeignKey('licenses.id'))
     
     speakers = orm.relation('Speaker', secondary=talks_speakers_table, backref='talks')
 
