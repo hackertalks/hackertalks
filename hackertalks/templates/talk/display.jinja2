@@ -5,16 +5,36 @@
 {%- endblock title %}
 
 {% block content -%}
+	<div id=feat_box>
+		<div class=container>
+            <a href="{{ h.url_for('talk', id=c.talk.id) }}">
+			<div class=feat_preview>
+				<img src='{{ c.talk.thumbnail_url }}' width='480' />
+			</div>
+			<div class=feat_titlebar>
+				Featured: {{ h.smart_truncate(c.talk.short_title, 34) }}
+			</div>
+			<div class=feat_info>
+                {% set talk = c.talk %}
+                {% include 'talk.inc.jinja2' %}
+			</div>
+            </a>
+		</div>
+	</div>
 	<h1> {{ c.talk.title }} info! </h1>
+    {% set talk = c.talk %}
+    {% include 'talk.inc.jinja2' %}
+    {#
 	<p>
+		Language = {{c.talk.language.name}} <br />
 		Description = {{c.talk.description}} <br />
 		Speakers = {% for speaker in c.talk.speakers -%}
-		{{ h.link_to(speaker.nickname, h.url_for(controller='speaker', action='display', id=speaker.id)) }}
+			<a href="/speaker/{{speaker.id}}" alt="{{speaker.first_name}} {{speaker.last_name}}"> {{speaker.nickname}} </a>
 		{%- endfor %} <br />
 		Video Length = {{c.talk.video_duration}} <br />
 		Video Embedcode = {{c.talk.video_embedcode}} <br />
-		{# General = {{ c.talk.get() }} <br /> #}
-		{# Test = {{ c.talk.get('title') }} <br /> #}
+		General = {{ c.talk.get() }} <br />
+		Test = {{ c.talk.get('title') }} <br />
 		Tags = 
 		<ul>
 			{% for tag in c.talk.tags -%}
@@ -22,5 +42,6 @@
 			{%- endfor %}
 		</ul>
 	</p>
+    #}
 {%- endblock content %}
 

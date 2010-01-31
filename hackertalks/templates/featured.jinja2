@@ -13,15 +13,8 @@
 				Featured: {{ h.smart_truncate(c.featured_talks[0].short_title, 34) }}
 			</div>
 			<div class=feat_info>
-				<h2>{{ c.featured_talks[0].title }}</h2>
-				<p>
-					{% for speaker in c.featured_talks[0].speakers %}
-						{{ speaker.name }} {% if speaker.job_title -%}({{ speaker.job_title }}){%- endif %}<br />
-					{% endfor %}
-				</p>
-				<p>{{ c.featured_talks[0].recording_date }}<br />
-				{{ h.format_duration(c.featured_talks[0].video_duration) }}</p>
-				<p>{{ h.smart_truncate(c.featured_talks[0].description, 134) }}</p>
+                {% set talk = c.featured_talks[0] %}
+                {% include 'talk.inc.jinja2' %}
 			</div>
             </a>
 		</div>
