@@ -16,7 +16,7 @@ body {
 
 .container {
     position: relative;
-    width: 700px;
+    width: 800px;
     margin: 0 auto;
     text-align: justify;
 }
@@ -50,7 +50,7 @@ body {
     list-style: none;
 	float: left;
 	display: block;
-	width: 348px;
+	width: 398px;
 	text-align: center;
 	margin: 0;
 	padding: 0;
@@ -65,7 +65,7 @@ body {
 }
 
 .menu li.stumble {
-	width: 349px;
+	width: 399px;
 }
 
 .menu li.search:hover {
@@ -82,19 +82,19 @@ body {
     border-bottom: none;
 }
 
-#search_container {
+/* #search_container {
 	display: none;
 	position: absolute;
 	left: -1px;
 	top: 23px;
 	background-image: url('images/search_box.png');
 	background-repeat: no-repeat;
-	width: 700px;
+	width: 800px;
 	height: 132px;
 	z-index: 1;
 	text-align: left;
 	padding: 28px 40px;
-}
+} */
 
 #stumble_container {
 	display: none;
@@ -102,9 +102,31 @@ body {
 	right: -1px;
 	top: 23px;
 	background-image: url('images/stumble_box.png');
-	width: 700px;
+	width: 800px;
 	height: 132px;
 	z-index: 1;
+}
+
+#search_container {
+	display: none;
+	position: absolute;
+	left: -1px;
+	top: 23px;
+	/* background-image: url('images/feat_box_bottom_shadow.png'); */
+	background-image: url('images/search_line.png');
+	background-color: #FFFFFF;
+	/* background-repeat: repeat-x; */
+	background-repeat: repeat-y;
+	z-index: 1;
+	width: 800px;
+	height: 132px;
+	/* margin-top: -24px; */
+	border-right: 2px solid #333333;
+	border-bottom: 3px solid #333333;
+	/* padding-top: 25px; */
+	text-align: left;
+	/* padding: 28px 40px; */
+	padding: 0px 20px 20px 20px;
 }
 
 .menu li:hover #search_container {
@@ -117,6 +139,7 @@ body {
 
 #feat_box {
     position: relative;
+	/* this height defines where the white sheet starts (from top): */
     height: 347px;
     background-image: url('images/featured_box.png');
 	background-repeat: repeat-x;
@@ -215,7 +238,7 @@ h2 {
 
 
 .result_txt {
-    width: 540px;
+    width: 640px;
     float: right;
 	font-size: 12px;
 	line-height: 14px;
