@@ -5,6 +5,7 @@
 {% block content %}
 	<div id=feat_box>
 		<div class=container>
+            <a href="{{ h.url_for('talk', id=c.featured_talks[0].id) }}">
 			<div class=feat_preview>
 				<img src='{{ c.featured_talks[0].thumbnail_url }}' width='480' />
 			</div>
@@ -22,6 +23,7 @@
 				{{ h.format_duration(c.featured_talks[0].video_duration) }}</p>
 				<p>{{ h.smart_truncate(c.featured_talks[0].description, 134) }}</p>
 			</div>
+            </a>
 		</div>
 	</div>
 
@@ -30,21 +32,24 @@
 			
 			{% for talk in c.featured_talks[1:7] -%}
 			
-			<div class=result_preview>
-				<img src='{{ talk.thumbnail_url }}' width='70' />
-			</div>
-			<div class=result_txt>
-				<h2 class=result_title>
-					{{ h.smart_truncate(talk.title, 64) }}<br />
-				</h2>
-				{{ h.smart_truncate(talk.description, 90) }}<br />
-				{% for speaker in talk.speakers %}
-					{{ speaker.name }}{% if speaker.job_title -%} {{ speaker.job_title }}{%- endif %},
-				{% endfor %}
-			</div>
+            <div class="result">
+                <a href="{{ h.url_for('talk', id=talk.id) }}">
+                    <div class="result_preview">
+                        <img src='{{ talk.thumbnail_url }}' width='70' />
+                    </div>
+                    <div class="result_txt">
+                        <h2 class=result_title>
+                            {{ h.smart_truncate(talk.title, 64) }}<br />
+                        </h2>
+                        {{ h.smart_truncate(talk.description, 90) }}<br />
+                        {% for speaker in talk.speakers %}
+                            {{ speaker.name }}{% if speaker.job_title -%} {{ speaker.job_title }}{%- endif %},
+                        {% endfor %}
+                    </div>
+                </a>
+            </div>
 			
 			{%- endfor %}
-			
 		</div>
 	</div>
 {% endblock %}

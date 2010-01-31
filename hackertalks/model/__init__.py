@@ -70,7 +70,7 @@ class Talk(Base):
     recording_date = sa.Column(sa.types.Date())
     video_duration = sa.Column(sa.types.Interval())
     video_embedcode = sa.Column(sa.types.UnicodeText())
-    video_bliptv_id = sa.Column(sa.types.Integer())
+    video_bliptv_id = sa.Column(sa.types.Integer(), null=True)
 
     ## We need a set list of licenses because they MUST be the same as where the videos are stored.
     license = sa.Column(sa.types.Integer(), sa.ForeignKey('licenses.id'))
@@ -90,3 +90,4 @@ class Talk(Base):
 
     def __repr__(self):
         return "<Talk(id='%s', title='%s', video_bliptv_id='%s')>" % (self.id, self.title, self.video_bliptv_id)
+
