@@ -7,18 +7,18 @@
 {% block content -%}
 	<div id=feat_box>
 		<div class=container>
-            <a href="{{ h.url_for('talk', id=c.talk.id) }}">
 			<div class=feat_preview>
-				<img src='{{ c.talk.thumbnail_url }}' width='480' />
+				{{ c.talk.video_embedcode }}
 			</div>
 			<div class=feat_titlebar>
-				Featured: {{ h.smart_truncate(c.talk.short_title, 34) }}
+                <a href="{{ h.url_for('talk', id=c.talk.id) }}">
+                    {{ h.smart_truncate(c.talk.short_title, 34) }}
+                </a>
 			</div>
 			<div class=feat_info>
                 {% set talk = c.talk %}
                 {% include 'talk.inc.jinja2' %}
 			</div>
-            </a>
 		</div>
 	</div>
 	<h1> {{ c.talk.title }} info! </h1>
