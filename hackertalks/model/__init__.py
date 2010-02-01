@@ -90,3 +90,4 @@ class Talk(Base):
 
     def __repr__(self):
         return "<Talk(id='%s', title='%s', video_bliptv_id='%s')>" % (self.id, self.title, self.video_bliptv_id)
+

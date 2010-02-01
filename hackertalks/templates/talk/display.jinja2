@@ -5,12 +5,31 @@
 {%- endblock title %}
 
 {% block content -%}
+	<div id=feat_box>
+		<div class=container>
+			<div class=feat_preview>
+				{{ c.talk.video_embedcode }}
+			</div>
+			<div class=feat_titlebar>
+                <a href="{{ h.url_for('talk', id=c.talk.id) }}">
+                    {{ h.smart_truncate(c.talk.short_title, 34) }}
+                </a>
+			</div>
+			<div class=feat_info>
+                {% set talk = c.talk %}
+                {% include 'talk.inc.jinja2' %}
+			</div>
+		</div>
+	</div>
 	<h1> {{ c.talk.title }} info! </h1>
+    {% set talk = c.talk %}
+    {% include 'talk.inc.jinja2' %}
+    {#
 	<p>
 		Language = {{c.talk.language.name}} <br />
 		Description = {{c.talk.description}} <br />
 		Speakers = {% for speaker in c.talk.speakers -%}
-		{{ h.link_to(speaker.nickname, h.url_for(controller='speaker', action='display', id=speaker.id)) }}
+			<a href="/speaker/{{speaker.id}}" alt="{{speaker.first_name}} {{speaker.last_name}}"> {{speaker.nickname}} </a>
 		{%- endfor %} <br />
 		Video Length = {{c.talk.video_duration}} <br />
 		Video Embedcode = {{c.talk.video_embedcode}} <br />
@@ -23,5 +42,6 @@
 			{%- endfor %}
 		</ul>
 	</p>
+    #}
 {%- endblock content %}
 
