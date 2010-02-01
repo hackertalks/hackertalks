@@ -1,5 +1,7 @@
 import logging
 
+from sqlalchemy import or_, func
+
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort, redirect_to, url_for
 
@@ -45,3 +47,12 @@ class TalkController(BaseController):
             )
         response.content_type = u'application/rss+xml'
         return feed.writeString('utf-8')
+
+    def search(self):
+        s = request.GET.get('search','').lower()
+        talks = self.q.filter(or_(func.lower(Talk.title).contains(s),func.lower(Talk.description).contains(s))).all()
+
+        c.talks = talks
+        
+        return render('/talk/search.jinja2')
+
