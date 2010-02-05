@@ -19,7 +19,7 @@ def make_map():
     map.connect('/error/{action}/{id}', controller='error')
     
     # CUSTOM ROUTES HERE
-    map.connect('/', controller='frontpage', action='index')
+    map.connect('home', '/', controller='frontpage', action='index')
     
     map.connect('talkindex', '/talk', controller='talk', action='index')
     map.connect('talk_search', '/talk/search', controller='talk', action='search')
@@ -28,8 +28,23 @@ def make_map():
     map.connect('speakerindex', '/speaker', controller='speaker', action='index')
     map.connect('speaker', '/speaker/{id}', controller='speaker', action='display')
     
+    # Accounts
+    map.connect('account_login', '/accounts/login', controller='accounts', action='login')
+    map.connect('account_register', '/accounts/register', controller='accounts', action='register')
+    map.connect('account_logout', '/accounts/logout', controller='accounts', action='logout')
+    map.connect('verify_email', '/accounts/verify_email/{token}', controller='accounts', action='verify_email')
+    map.connect('forgot_password', '/accounts/forgot_password', controller='accounts', action='forgot_password')
+    map.connect('reset_password', '/accounts/reset_password/{token}', controller='accounts', action='change_password')
+    
+    # OpenID URL's
+    map.connect('openid_associate', '/accounts/openid/associate', controller='accounts', action='openid_associate')
+    map.connect('openid_register', '/accounts/openid/register', controller='accounts', action='openid_register')
+    map.connect('openid_login', '/accounts/openid/login', controller='consumer', action='login')
+    map.connect('openid_process', '/accounts/openid/process', controller='consumer', action='process')
+    map.connect('openid_create', '/accounts/openid/create', controller='consumer', action='create')
+
     map.connect('/{controller}', action='index')
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')
-
+    
     return map

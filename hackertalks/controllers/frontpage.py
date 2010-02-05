@@ -12,5 +12,10 @@ log = logging.getLogger(__name__)
 
 class FrontpageController(BaseController):
     def index(self):
+
+        print '---'
+        print 'logged_in' in session
+        print '---'
+
         c.featured_talks = Session.query(Talk).order_by(Talk.recording_date.desc()).limit(7)
         return render('featured.jinja2')

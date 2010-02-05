@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import datetime
 
 from hackertalks.model import meta
+from hackertalks.model.human import Human, OpenID
 
 Base = meta.Base
 

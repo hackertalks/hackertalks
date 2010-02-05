@@ -9,6 +9,11 @@ from webhelpers.html import literal
 from webhelpers.html.tags import *
 from webhelpers.pylonslib.secure_form import secure_form
 from routes import url_for, url_for as url
+from webhelpers.pylonslib import Flash as _Flash
+from pylons import session
+
+success_flash = _Flash('success')
+failure_flash = _Flash('failure')
 
 def smart_truncate(content, length=100, suffix='...'):
     if len(content) <= length:

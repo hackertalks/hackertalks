@@ -5,6 +5,10 @@ from jinja2 import ChoiceLoader, Environment, FileSystemLoader
 from pylons import config
 from sqlalchemy import engine_from_config
 
+from mako.lookup import TemplateLookup
+from paste.deploy.converters import asbool
+from pylons.error import handle_mako_error
+
 import hackertalks.lib.app_globals as app_globals
 import hackertalks.lib.helpers
 from hackertalks.config.routing import make_map
@@ -33,6 +37,16 @@ def load_environment(global_conf, app_conf):
             [FileSystemLoader(path) for path in paths['templates']]))
     # Jinja2's unable to request c's attributes without strict_c
     config['pylons.strict_c'] = True
+
+    config['pylons.app_globals'].mako_lookup = TemplateLookup(
+        directories=paths['templates'],
+        error_handler=handle_mako_error,
+        module_directory=os.path.join(app_conf['cache_dir'], 'templates'),
+        input_encoding='utf-8', output_encoding='utf-8',
+        imports=['from webhelpers.html import escape'],
+        filesystem_checks=asbool(config['debug']),
+        default_filters=['escape'])
+
 
     # Setup the SQLAlchemy database engine
     engine = engine_from_config(config, 'sqlalchemy.')

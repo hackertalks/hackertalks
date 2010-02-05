@@ -4,6 +4,7 @@ Provides the BaseController class for subclassing.
 """
 from pylons.controllers import WSGIController
 from pylons.templating import render_jinja2 as render
+from pylons.templating import render_mako
 
 from hackertalks.model import meta
 
