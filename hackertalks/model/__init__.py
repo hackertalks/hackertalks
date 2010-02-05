@@ -91,4 +91,15 @@ class Talk(Base):
 
     def __repr__(self):
         return "<Talk(id='%s', title='%s', video_bliptv_id='%s')>" % (self.id, self.title, self.video_bliptv_id)
+    
+class FeaturedTalk(Base):
+    __tablename__ = 'talks_featured'
+
+    talk_id = sa.Column(sa.types.Integer(), sa.ForeignKey(Talk.id), nullable=False)
+    date = sa.Column(sa.Date(), nullable=False, unique=True)
+
+    talk = orm.relation(Talk, primaryjoin=talk_id == Talk.id)
+
+    __table_args__ = (sa.PrimaryKeyConstraint("talk_id", "date"), {},)
+
 
