@@ -20,6 +20,11 @@ talks_speakers_table = sa.Table('talks_speakers', meta.metadata,
     sa.Column('speaker_id', sa.types.Integer(), sa.ForeignKey('speakers.id'), primary_key=True),
     )
 
+talks_speakers_table = sa.Table('talks_tags', meta.metadata,
+    sa.Column('talk_id', sa.types.Integer(), sa.ForeignKey('talks.id'), primary_key=True),
+    sa.Column('tag_name', sa.types.Unicode(), sa.ForeignKey('tags.name'), primary_key=True), # this might be a bad idea.
+    )
+
 class Speaker(Base):
     __tablename__ = 'speakers'
 
@@ -57,7 +62,6 @@ class License(Base):
         
     def __repr__(self):
         return "<License(id='%d', name='%s')>" % (self.id, self.name)
-    pass
 
 
 class Talk(Base):
@@ -93,6 +97,7 @@ class Talk(Base):
         return "<Talk(id='%s', title='%s', video_bliptv_id='%s')>" % (self.id, self.title, self.video_bliptv_id)
     
 class FeaturedTalk(Base):
+    """ past or future featured talks """
     __tablename__ = 'talks_featured'
 
     talk_id = sa.Column(sa.types.Integer(), sa.ForeignKey(Talk.id), nullable=False)
@@ -101,5 +106,47 @@ class FeaturedTalk(Base):
     talk = orm.relation(Talk, primaryjoin=talk_id == Talk.id)
 
     __table_args__ = (sa.PrimaryKeyConstraint("talk_id", "date"), {},)
+    
+    def __repr__(self):
+        return "<Talk(id='%s', talk_id='%s', video_bliptv_id='%s')>" % (self.id, self.title, self.video_bliptv_id)
 
+
+class StumbleSession(Base):
+    """ current or past record of an user stumblin' around """
+    __tablename__ = 'stumble_session'
+
+    id = sa.Column(sa.types.Integer(), primary_key=True)
+    session_id = sa.Column(sa.types.UnicodeText())
+
+
+class StumbleVisit(Base):
+    """ indicates that a session has seen a talk"""
+    __tablename__ = 'stumble_session_talk'
+
+    id = sa.Column(sa.types.Integer(), primary_key=True)
+
+    stumble_session_id = sa.Column(sa.types.Integer(), sa.ForeignKey(StumbleSession.id))
+    talk_id = sa.Column(sa.types.Integer(), sa.ForeignKey(Talk.id))
+
+    talk = orm.relation(Talk, primaryjoin=talk_id == Talk.id)
+    stumble_session = orm.relation(StumbleSession, primaryjoin=stumble_session_id == StumbleSession.id)
+
+
+class Tag(Base):
+    """ guess what: tags! """
+    __tablename__ = 'tags'
+
+    name = sa.Column(sa.types.Unicode(), primary_key=True) # this might be a bad idea.
+
+    @classmethod
+    def get_or_create(cls, name):
+        try:
+            meta.Session.begin_nested()
+            x = Tag()
+            x.name = name
+            meta.Session.add(x)
+            meta.Session.commit()
+        except sa.exceptions.SQLAlchemyError, e: # IntegrityError and FlushError encountered
+            meta.Session.rollback()
+            return meta.Session.query(Tag).filter(Tag.name==name).one()
 

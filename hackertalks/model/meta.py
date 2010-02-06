@@ -15,6 +15,19 @@ Session = scoped_session(sessionmaker())
 # Global metadata. If you have multiple databases with overlapping table
 # names, you'll need a metadata for each database
 
-Base = declarative_base()
+
+class HTBase(object):
+    def __repr__(self):
+        s = "<"
+        s += self.__class__.__name__
+        s += "("
+        s += '.'.join(['%s="%s"' % (key, unicode(self.__dict__[key])) for key in self.__table__.columns.keys()])
+        s += ")>"
+        return s
+
+    def __getattr__(self, attr, default):
+        return getattr(super(Base, self), attr, default)
+
+Base = declarative_base(cls=HTBase)
 
 metadata = Base.metadata
