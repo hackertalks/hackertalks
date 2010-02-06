@@ -20,7 +20,7 @@ talks_speakers_table = sa.Table('talks_speakers', meta.metadata,
     sa.Column('speaker_id', sa.types.Integer(), sa.ForeignKey('speakers.id'), primary_key=True),
     )
 
-talks_speakers_table = sa.Table('talks_tags', meta.metadata,
+talks_tags_table = sa.Table('talks_tags', meta.metadata,
     sa.Column('talk_id', sa.types.Integer(), sa.ForeignKey('talks.id'), primary_key=True),
     sa.Column('tag_name', sa.types.Unicode(), sa.ForeignKey('tags.name'), primary_key=True), # this might be a bad idea.
     )

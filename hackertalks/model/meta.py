@@ -21,7 +21,7 @@ class HTBase(object):
         s = "<"
         s += self.__class__.__name__
         s += "("
-        s += '.'.join(['%s="%s"' % (key, unicode(self.__dict__[key])) for key in self.__table__.columns.keys()])
+        s += '.'.join(['%s="%s"' % (key, unicode(self.__dict__.get(key, getattr(self, key, '__unknown__')))) for key in self.__table__.columns.keys()])
         s += ")>"
         return s
 
