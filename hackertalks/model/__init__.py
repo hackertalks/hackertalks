@@ -33,11 +33,6 @@ class Speaker(Base):
     name = sa.Column(sa.types.Unicode())
     job_title = sa.Column(sa.types.Unicode())
 
-#    def __init__(self, name, job_title):
-#        self.name = name
-#        self.job_title = job_title
-
-    
 class License(Base):
     __tablename__ = 'licenses'
     
@@ -49,15 +44,6 @@ class License(Base):
     thumbnail = sa.Column(sa.types.Unicode())
     shareable = sa.Column(sa.types.Boolean())
     description = sa.Column(sa.types.UnicodeText())
-    
-#    def __init__(self, name=None, shortname=None, abbreviation=None, link=None, thumbnail=None, shareable=None, description=None):
-#        self.name = name
-#        self.shortname = shortname
-#        self.abbreviation = abbreviation
-#        self.link = link
-#        self.thumbnail = thumbnail
-#        self.shareable = shareable
-#        self.description = description
         
 
 class Talk(Base):
@@ -79,17 +65,7 @@ class Talk(Base):
     license = sa.Column(sa.types.Integer(), sa.ForeignKey('licenses.id'))
     
     speakers = orm.relation('Speaker', secondary=talks_speakers_table, backref='talks')
-
-#    def __init__(self, short_title=None, title=None, description=None, thumbnail_url=None, recording_date=datetime.datetime.now(), license=None, video_duration=datetime.timedelta(0), video_embedcode=None, video_bliptv_id=None):
-#        self.short_title = short_title
-#        self.title = title
-#        self.description = description
-#        self.thumbnail_url = thumbnail_url
-#        self.recording_date = recording_date
-#        self.license = license
-#        self.video_duration = video_duration
-#        self.video_embedcode = video_embedcode
-#        self.video_bliptv_id = video_bliptv_id
+    tags = orm.relation('Tag', secondary=talks_tags_table, backref='talks')
 
     def publish(self):
         speaker_names = u','.join(s.name for s in self.speakers)
