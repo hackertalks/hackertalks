@@ -19,4 +19,9 @@ class FrontpageController(BaseController):
         print '---'
 
         c.featured_talks = [x.talk for x in Session.query(FeaturedTalk).filter(FeaturedTalk.date<=datetime.now()).order_by(FeaturedTalk.date.desc()).limit(7)]
+        print '---'
+        print c.featured_talks.__len__()
+        print c.featured_talks
+        print '---'
+
         return render('featured.jinja2')

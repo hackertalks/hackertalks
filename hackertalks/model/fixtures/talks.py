@@ -43,6 +43,14 @@ class TalkData(DataSet):
         speakers = [SpeakerData.micah, SpeakerData.drew]
 
 
+class FeaturedTalkData(DataSet):
+    class jalol:
+        talk = TalkData.brestalk
+        date = '2010-01-01'
+    class jalolol:
+        talk = TalkData.agilemgmt
+        date = '2010-01-02'
+
 
 class LicenseData(DataSet):
     class C:
@@ -157,4 +165,16 @@ class LicenseData(DataSet):
 		thumbnail = 'http://i.creativecommons.org/l/by-nd/3.0/88x31.png'
 		description = '<p>Others are free to:</p> <ul><li>copy, distribute, display and perform the work;</li><li>make derivative works;</li><li>make commercial use of this work;</li></ul><p>As long as they:</p><ul><li>Give the original author credit.</li><li>Share alike &#151; if they alter, transform, or build upon this work they must distribute the resulting work under a license identical to this one.<li>Make clear the original license terms.</li></ul>'
 		shareable = True
+
+
+def get_db():
+    from hackertalks.model import meta
+    from hackertalks import model
+    from fixture.style import NamedDataStyle
+    from fixture import SQLAlchemyFixture
+    return SQLAlchemyFixture(env=model, style=NamedDataStyle(),engine=meta.engine)
+
+def load_data(cls):
+    get_db().data(cls).setup()
+
 

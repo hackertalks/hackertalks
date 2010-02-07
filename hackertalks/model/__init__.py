@@ -94,7 +94,18 @@ class Talk(Base):
     def publish(self):
         speaker_names = u','.join(s.name for s in self.speakers)
         title = self.short_title if self.short_title else self.title
-        self.slug = h.slugify(u'%s - %s' % (speaker_names, title))
+        base_slug = h.slugify(u'%s - %s' % (speaker_names, title))
+
+        for x in xrange(10):
+            meta.Session.begin_nested()
+            m=u'%s%s' % (base_slug,x if x!=0 else u'')
+            try:
+                self.slug = m
+                meta.Session.merge(self)
+                meta.Session.commit()
+                return self
+            except:
+                meta.Session.rollback()
 
     @property
     def url(self):
