@@ -19,16 +19,13 @@ class TalkController(BaseController):
         c.talks = self.q.limit(25)
         return render('talk/index.jinja2')
         
-    def display(self, id):
-        if id.isdigit():
-            c.talk = self.q.get(id)
-            if c.talk != None:
-                return render('/talk/display.jinja2')
-            else:
-                response.status_int = 404
-                return render('/error.jinja2')
-        response.status_int = 400
-        return render('/error.jinja2')
+    def display(self, slug):
+        c.talk = self.q.filter(Talk.slug == slug).all()[0]
+        if c.talk != None:
+            return render('/talk/display.jinja2')
+        else:
+            response.status_int = 404
+            return render('/error.jinja2')
     
     def feed(self):
         talks = self.q.limit(10)

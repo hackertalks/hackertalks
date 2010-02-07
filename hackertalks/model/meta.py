@@ -25,8 +25,8 @@ class HTBase(object):
         s += ")>"
         return s
 
-    def __getattr__(self, attr, default):
-        return getattr(super(Base, self), attr, default)
+    def __getattr__(self, **kwargs):
+        return Base.__getattr__(**kwargs)
 
 Base = declarative_base(cls=HTBase)
 

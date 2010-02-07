@@ -8,7 +8,7 @@
 			
 			{% for talk in c.talks -%}
                 <div class="result">
-                    <a href="{{ h.url_for('talk', id=talk.id) }}">
+                    <a href="{{ talk.url }}">
                     <div class=result_preview>
                         <img src='{{ talk.thumbnail_url }}' width="80px" />
                     </div>

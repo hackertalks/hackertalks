@@ -5,5 +5,5 @@
     {% endfor %}
 </p>
 <p>{{ talk.recording_date }}<br />
-{{ h.format_duration(talk.video_duration) }}</p>
+{{ talk.video_duration }}</p>
 <p>{{ h.smart_truncate(talk.description, 134) }}</p>

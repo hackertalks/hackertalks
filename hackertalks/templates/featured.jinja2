@@ -5,15 +5,15 @@
 {% block content %}
 	<div id=feat_box>
 		<div class=container>
-            <a href="{{ h.url_for('talk', id=c.featured_talks[0].id) }}">
+            {% set talk = c.featured_talks[0] %}
+            <a href="{{ talk.url }}">
 			<div class=feat_preview>
-				<img src='{{ c.featured_talks[0].thumbnail_url }}' width='480' />
+				<img src='{{ talk.thumbnail_url }}' width='480' />
 			</div>
 			<div class=feat_titlebar>
-				Featured: {{ h.smart_truncate(c.featured_talks[0].short_title, 34) }}
+				Featured: {{ h.smart_truncate(talk.short_title, 34) }}
 			</div>
 			<div class=feat_info>
-                {% set talk = c.featured_talks[0] %}
                 {% include 'talk.inc.jinja2' %}
 			</div>
             </a>
@@ -23,10 +23,10 @@
 	<div class=container id=sheet_container>
 		<div class=sheet>
 
-			{% for talk in c.featured_talks[1:7] -%}
+			{% for talk in c.featured_talks -%}
 			
             <div class="result">
-                <a href="{{ h.url_for('talk', id=talk.id) }}">
+                <a href="{{ talk.url }}">
                     <div class="result_preview">
                         <img src='{{ talk.thumbnail_url }}' width='70' />
                     </div>

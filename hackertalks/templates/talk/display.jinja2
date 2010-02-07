@@ -7,16 +7,16 @@
 {% block content -%}
 	<div id=feat_box>
 		<div class=container>
+            {% set talk = c.talk %}
 			<div class=feat_preview>
 				{{ c.talk.video_embedcode }}
 			</div>
 			<div class=feat_titlebar>
-                <a href="{{ h.url_for('talk', id=c.talk.id) }}">
+                <a href="{{ c.talk.url }}">
                     {{ h.smart_truncate(c.talk.short_title, 34) }}
                 </a>
 			</div>
 			<div class=feat_info>
-                {% set talk = c.talk %}
                 {% include 'talk.inc.jinja2' %}
 			</div>
 		</div>

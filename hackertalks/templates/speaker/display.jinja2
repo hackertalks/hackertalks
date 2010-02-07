@@ -12,7 +12,7 @@
 		Nickname =  {{ c.speaker.nickname }}<br />
 		
 		Talks = {% for talk in c.speaker.talks -%}
-		{{ h.link_to(talk.title, h.url_for(controller='talk', action='display', id=talk.id)) }},
+		{{ h.link_to(talk.title, talk.url }},
 		{%- endfor %} 
 	</p>
 {%- endblock content %}
