@@ -22,8 +22,10 @@ def make_map():
     map.connect('home', '/', controller='frontpage', action='index')
     
     map.connect('talkindex', '/talk', controller='talk', action='index')
-    map.connect('talk_search', '/talk/search', controller='talk', action='search')
+    map.connect('talk_searchpoint', '/talk/search', controller='talk', action='searchpoint')
+    map.connect('talk_search', '/talk/search/{kw}', controller='talk', action='search')
     map.connect('talk', '/talk/{slug}', controller='talk', action='display')
+    map.connect('talk', '/talk/{slug}/in/{context}', controller='talk', action='display')
     
     map.connect('speakerindex', '/speaker', controller='speaker', action='index')
     map.connect('speaker', '/speaker/{id}', controller='speaker', action='display')

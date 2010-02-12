@@ -23,7 +23,7 @@ talks_speakers_table = sa.Table('talks_speakers', meta.metadata,
 
 talks_tags_table = sa.Table('talks_tags', meta.metadata,
     sa.Column('talk_id', sa.types.Integer(), sa.ForeignKey('talks.id'), primary_key=True),
-    sa.Column('tag_name', sa.types.Unicode(), sa.ForeignKey('tags.name'), primary_key=True), # this might be a bad idea.
+    sa.Column('tag_id', sa.types.Integer(), sa.ForeignKey('tags.id'), primary_key=True), # this might be a bad idea.
     )
 
 class Speaker(Base):
@@ -125,7 +125,9 @@ class Tag(Base):
     """ guess what: tags! """
     __tablename__ = 'tags'
 
-    name = sa.Column(sa.types.Unicode(), primary_key=True) # this might be a bad idea.
+    name = sa.Column(sa.types.Unicode(), unique=True) # this might be a bad idea.
+    
+    id = sa.Column(sa.types.Integer(), primary_key=True)
 
     @classmethod
     def get_or_create(cls, name):

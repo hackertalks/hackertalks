@@ -1,5 +1,5 @@
 from fixture import DataSet
-
+from inspect import isclass
 
 
 class SpeakerData(DataSet):
@@ -16,6 +16,12 @@ class SpeakerData(DataSet):
         job_title = 'MakerBot'
 
 
+class TagData(DataSet):
+    class security:
+        name = 'Security'
+    class lol:
+        name = 'lol'
+
 
 class TalkData(DataSet):
     class brestalk:
@@ -29,6 +35,7 @@ class TalkData(DataSet):
         video_bliptv_id = 2512747
 
         speakers = [SpeakerData.bre]
+        tags = [TagData.security, TagData.lol]
 
     class agilemgmt:
         short_title = 'Agile Management'
@@ -41,6 +48,7 @@ class TalkData(DataSet):
         video_bliptv_id = 2523345
 
         speakers = [SpeakerData.micah, SpeakerData.drew]
+        tags = [TagData.security]
 
 
 class FeaturedTalkData(DataSet):
@@ -166,15 +174,25 @@ class LicenseData(DataSet):
 		description = '<p>Others are free to:</p> <ul><li>copy, distribute, display and perform the work;</li><li>make derivative works;</li><li>make commercial use of this work;</li></ul><p>As long as they:</p><ul><li>Give the original author credit.</li><li>Share alike &#151; if they alter, transform, or build upon this work they must distribute the resulting work under a license identical to this one.<li>Make clear the original license terms.</li></ul>'
 		shareable = True
 
+import sys,os
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(globals()["__file__"])),'../../../'))
+from hackertalks.model import meta
+from hackertalks.model import meta
+from hackertalks import model
+from fixture.style import NamedDataStyle
+from fixture import SQLAlchemyFixture
 
 def get_db():
-    from hackertalks.model import meta
-    from hackertalks import model
-    from fixture.style import NamedDataStyle
-    from fixture import SQLAlchemyFixture
     return SQLAlchemyFixture(env=model, style=NamedDataStyle(),engine=meta.engine)
 
 def load_data(cls):
-    get_db().data(cls).setup()
+    print cls
+    try:
+        get_db().data(cls).setup()
+    except Exception, e:
+        print e
+    meta.Session.commit()
 
-
+#def load_all(): # may be misguided, use load_data(TalkData) instead
+#    g = globals().items()
+#    [load_data(x[1]) for x in g if isclass(x[1]) and issubclass(x[1], DataSet) and not x[1]==DataSet];

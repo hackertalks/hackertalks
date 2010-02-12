@@ -19,7 +19,8 @@ class TalkController(BaseController):
         c.talks = self.q.limit(25)
         return render('talk/index.jinja2')
         
-    def display(self, slug):
+    def display(self, slug, context=None):
+        print context
         c.talk = self.q.filter(Talk.slug == slug).all()[0]
         if c.talk != None:
             return render('/talk/display.jinja2')
@@ -36,8 +37,8 @@ class TalkController(BaseController):
             language=u'en',
         )
         for talk in talks:
-            feed.add_item(title=post.subject,
-                link="http://hackertalks.org/talk/%s" % talk.id,
+            feed.add_item(title=talk.subject,
+                link=talk.url,
                 description=talk.content,
                 ## pubdate=talk.date,
                 author_name=talk.author,
@@ -45,9 +46,14 @@ class TalkController(BaseController):
         response.content_type = u'application/rss+xml'
         return feed.writeString('utf-8')
 
-    def search(self):
+    def searchpoint(self):
         s = request.GET.get('search','').lower()
-        talks = self.q.filter(or_(func.lower(Talk.title).contains(s),func.lower(Talk.description).contains(s))).all()
+        s = s.replace('/','_')
+        return redirect_to(action='search', kw=s)
+
+
+    def search(self, kw):
+        talks = self.q.filter(or_(func.lower(Talk.title).contains(kw),func.lower(Talk.description).contains(kw))).all()
 
         c.talks = talks
         
