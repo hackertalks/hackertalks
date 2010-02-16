@@ -278,3 +278,12 @@ ul li {
 	padding: 2px;
 }
 
+#talk_context {
+    width: 100%;
+    color: red;
+    clear: both;
+}
+#talk_context a {
+    font-weight: bold;
+    color: lightblue;
+}

@@ -95,7 +95,7 @@ class FeaturedTalk(Base):
     talk_id = sa.Column(sa.types.Integer(), sa.ForeignKey(Talk.id), nullable=False)
     date = sa.Column(sa.Date(), nullable=False, unique=True)
 
-    talk = orm.relation(Talk, primaryjoin=talk_id == Talk.id)
+    talk = orm.relation(Talk, primaryjoin=talk_id == Talk.id, backref="featured")
 
     __table_args__ = (sa.PrimaryKeyConstraint("talk_id", "date"), {},)
     
@@ -117,7 +117,7 @@ class StumbleVisit(Base):
     stumble_session_id = sa.Column(sa.types.Integer(), sa.ForeignKey(StumbleSession.id))
     talk_id = sa.Column(sa.types.Integer(), sa.ForeignKey(Talk.id))
 
-    talk = orm.relation(Talk, primaryjoin=talk_id == Talk.id)
+    talk = orm.relation(Talk, primaryjoin=talk_id == Talk.id, backref='visits')
     stumble_session = orm.relation(StumbleSession, primaryjoin=stumble_session_id == StumbleSession.id)
 
 
@@ -139,5 +139,6 @@ class Tag(Base):
             meta.Session.commit()
         except sa.exceptions.SQLAlchemyError, e: # IntegrityError and FlushError encountered
             meta.Session.rollback()
-            return meta.Session.query(Tag).filter(Tag.name==name).one()
+            x = meta.Session.query(Tag).filter(Tag.name==name).one()
+
 

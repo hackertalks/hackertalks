@@ -24,8 +24,9 @@ def make_map():
     map.connect('talkindex', '/talk', controller='talk', action='index')
     map.connect('talk_searchpoint', '/talk/search', controller='talk', action='searchpoint')
     map.connect('talk_search', '/talk/search/{kw}', controller='talk', action='search')
+    map.connect('talk_stumble', '/talk/stumble', controller='talk', action='stumble')
+    map.connect('talk_stumble_next', '/talk/stumble/next', controller='talk', action='stumble_next')
     map.connect('talk', '/talk/{slug}', controller='talk', action='display')
-    map.connect('talk', '/talk/{slug}/in/{context}', controller='talk', action='display')
     
     map.connect('speakerindex', '/speaker', controller='speaker', action='index')
     map.connect('speaker', '/speaker/{id}', controller='speaker', action='display')

@@ -5,6 +5,16 @@
 {%- endblock title %}
 
 {% block content -%}
+    {% if session['current'] %}
+        <div id="talk_context">
+            {% if session['current']['type'] == 'stumble' %}
+                {{ h.link_to('stumble on!', h.url_for('talk_stumble_next')) }}
+            {% endif %}
+            {% if session['current']['type'] == 'search' %}
+                {{ h.link_to('back to search', h.url_for('talk_search', kw=session['current']['term'])) }}
+            {% endif %}
+        </div>
+    {% endif %}
 	<div id=feat_box>
 		<div class=container>
             {% set talk = c.talk %}

@@ -4,6 +4,11 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
+    {{ h.javascript_link('/js/jquery-ui-1.7.2/jquery-1.3.2.js', '/js/jquery-ui-1.7.2/ui/jquery-ui.js') }}
+    {{ h.javascript_link('/js/ht.js') }}
+    {{ h.stylesheet_link("/js/jquery-ui-1.7.2/themes/base/jquery-ui.css") }}
+    {{ h.stylesheet_link("/js/jquery-ui-1.7.2/themes/base/ui.all.css") }}
+        
 	{% block head %}
 	{{ h.stylesheet_link(h.url_for('/style.css')) }}
 	<title>{% block title %}{% endblock %} - HackerTalks</title>
@@ -34,8 +39,19 @@
 				</li>
 				<li class=stumble>
 					<a href='stumble'>stumble</a>
-					<div id=stumble_container>
-						Stumble!
+                    <div id=stumble_container>
+                        {{ h.form(h.url(controller='talk',action='stumble'), method='post')}}
+                            {% for t in c.tags %}
+                            <span class="tag">{{h.checkbox("tag", value=t.name)}} {{t.name}}</span>
+                            {% endfor %}
+
+                            <div id="stumble_duration"></div>
+
+                            {{h.hidden("duration_start", 10)}}{{h.hidden("duration_end", 90)}}
+
+                            {{h.submit("", "go")}}
+
+                        {{h.end_form()}}
 					</div>
 				</li>
 			</ul>

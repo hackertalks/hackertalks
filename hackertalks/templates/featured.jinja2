@@ -5,24 +5,26 @@
 {% block content %}
 	<div id=feat_box>
 		<div class=container>
-            {% set talk = c.featured_talks[0] %}
-            <a href="{{ talk.url }}">
-			<div class=feat_preview>
-				<img src='{{ talk.thumbnail_url }}' width='480' />
-			</div>
-			<div class=feat_titlebar>
-				Featured: {{ h.smart_truncate(talk.short_title, 34) }}
-			</div>
-			<div class=feat_info>
-                {% include 'talk.inc.jinja2' %}
-			</div>
-            </a>
+            {% if c.featured_talks %}
+                {% set talk = c.featured_talks[0] %}
+                <a href="{{ talk.url }}">
+                <div class=feat_preview>
+                    <img src='{{ talk.thumbnail_url }}' width='480' />
+                </div>
+                <div class=feat_titlebar>
+                    Featured: {{ h.smart_truncate(talk.short_title, 34) }}
+                </div>
+                <div class=feat_info>
+                    {% include 'talk.inc.jinja2' %}
+                </div>
+                </a>
+            {% endif %}
 		</div>
 	</div>
 
 	<div class=container id=sheet_container>
 		<div class=sheet>
-			{% for talk in c.featured_talks -%}
+			{% for talk in c.featured_talks if talk %}
             <div class="result">
                 <a href="{{ talk.url }}">
                     <div class="result_preview">
@@ -39,8 +41,9 @@
                     </div>
                 </a>
             </div>
-			
-			{%- endfor %}
+			{% else %}
+                no featured talks just yet, sorry!
+			{% endfor %}
 		</div>
 	</div>
 {% endblock %}

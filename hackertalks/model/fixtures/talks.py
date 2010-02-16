@@ -36,6 +36,7 @@ class TalkData(DataSet):
 
         speakers = [SpeakerData.bre]
         tags = [TagData.security, TagData.lol]
+        slug = 'making_a_reprap_pt1'
 
     class agilemgmt:
         short_title = 'Agile Management'
@@ -49,6 +50,7 @@ class TalkData(DataSet):
 
         speakers = [SpeakerData.micah, SpeakerData.drew]
         tags = [TagData.security]
+        slug = 'agile_mgmt'
 
 
 class FeaturedTalkData(DataSet):
