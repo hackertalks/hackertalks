@@ -106,6 +106,9 @@ class StumbleSession(Base):
 
     id = sa.Column(sa.types.Integer(), primary_key=True)
     session_id = sa.Column(sa.types.UnicodeText())
+    human_id = sa.Column(sa.types.Integer(), sa.ForeignKey(Human.id), nullable=True)
+
+    user = orm.relation(Human, primaryjoin=human_id == Human.id, backref='stumbles')
 
 
 class StumbleVisit(Base):

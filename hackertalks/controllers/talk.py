@@ -8,6 +8,7 @@ from pylons.controllers.util import abort, redirect_to, url_for
 from hackertalks.lib.base import BaseController, render
 
 from hackertalks.model import Talk, StumbleSession, StumbleVisit, Tag
+from hackertalks.model import Human
 from hackertalks.model.meta import Session
 from hackertalks.controllers.halpers import has_taglist
 
@@ -17,7 +18,10 @@ log = logging.getLogger(__name__)
 
 class TalkController(BaseController):
     q = Session.query(Talk).order_by(Talk.id.desc())
-                                     
+
+    def __before__(self):
+        request.user = Session.query(Human).filter(Human.id==session['user_id']).one() if session.get('user_id', None) else None
+
     @has_taglist()
     def index(self):
         c.talks = self.q.limit(25)
@@ -25,9 +29,6 @@ class TalkController(BaseController):
         
     @has_taglist()
     def display(self, slug, context=None):
-        
-        print session.get('current', '')
-
         c.talk = self.q.filter(Talk.slug == slug).all()[0]
         if c.talk != None:
             return render('/talk/display.jinja2')
@@ -74,7 +75,7 @@ class TalkController(BaseController):
         return render('/talk/search.jinja2')
 
     def stumble(self):
-        ss = StumbleSession()
+        ss = StumbleSession(session_id=session.id, human_id=request.user.id if request.user else None)
         Session.add(ss)
         Session.flush()
         session['current'] = {'type': 'stumble',
@@ -101,10 +102,11 @@ class TalkController(BaseController):
                 ).join(Talk.tags).filter(
                         Tag.name.in_(curr['tags'])
                 )
-        # TODO: filter if use has ever visited the talk. not only in this session
 
         for t in ts:
-            if not [x for x in t.visits if x.stumble_session==ss]:
+            if not Session.query(StumbleSession).filter(
+                    (StumbleSession.id==ss.id) if not request.user else (StumbleSession.user==request.user)
+                    ).join(StumbleVisit).filter(StumbleVisit.talk==t).count():
                 sv = StumbleVisit(talk=t, stumble_session=ss)
                 Session.add(sv)
                 Session.commit()
@@ -113,4 +115,4 @@ class TalkController(BaseController):
         session['current'] = None
         session.save()
         return 'zomg no moar stumbling!'
-        
+
