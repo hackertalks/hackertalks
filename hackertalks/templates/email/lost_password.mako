@@ -1,3 +1,6 @@
+<%! from hackertalks import email
+%>
+
 ${_('Hello,')}
 
 ${_("""A request has been made to reset your password. You can change your password 
@@ -8,4 +11,4 @@ ${_("""If you did not request us to reset and email you your password, please ig
 this email.""")}
 
 ${_("""Regards,
-PylonsHQ""")}
+%s""" % email.PRODUCT_NAME)}

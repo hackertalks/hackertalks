@@ -1,5 +1,6 @@
 <%!
     from hackertalks.model.forms import login_form
+    from hackertalks import email
 %>
 <div class="yui-b content">
     <h1>${_('OpenID Association')}</h1>
@@ -9,7 +10,7 @@
         an existing account so that you can use this OpenID URL to login with
         in the future, proceed below.''' % c.openid)}</p>
     
-    <p>${_('If you would like to register with PylonsHQ instead,')}
+    <p>${_('If you would like to register with %s instead,' % email.PRODUCT_NAME)}
         ${h.link_to(_('continue on to the registration page'), url=url('openid_register'))}.
     
     ${login_form(action=url('openid_associate')) | n}
