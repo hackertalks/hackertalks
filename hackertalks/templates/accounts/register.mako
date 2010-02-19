@@ -1,5 +1,6 @@
 <%!
     from hackertalks.model.forms import registration_form, openid_login_form, openid_registration_form
+    from hackertalks import email
 %>
 <div class="yui-b content">
     % if c.openid:
@@ -12,15 +13,15 @@
     % else:
     <h1>${_('Register for an Account')}</h1>
     
-    <p>${_('Create an account for the PylonsHQ site. This account will let you:')}
+    <p>${_('Create an account for the %s site. This account will let you:') % email.PRODUCT_NAME}
         <ul>
             <li>${_('Post Snippets, Jobs, and Sites')}</li>
             <li>${_("Comment on Tracebacks, Snippets, and Pastes'")}</li>
         </ul>
     </p>
     
-    <p>${_("""These will be used to identify you as you contribute on the PylonsHQ site. Notifications
-        from the system will be sent to this email address, as well as lost password requests""")}.</p>
+    <p>${_("""These will be used to identify you as you contribute on the %s site. Notifications
+        from the system will be sent to this email address, as well as lost password requests""" % email.PRODUCT_NAME)}.</p>
     
     <p>${_("""<b>Note: </b>A valid e-mail address is required to activate your
         account.""") |n}</p>

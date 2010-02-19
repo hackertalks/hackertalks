@@ -13,6 +13,7 @@ import hackertalks.lib.app_globals as app_globals
 import hackertalks.lib.helpers
 from hackertalks.config.routing import make_map
 from hackertalks.model import init_model
+from hackertalks import email
 
 def load_environment(global_conf, app_conf):
     """Configure the Pylons environment via the ``pylons.config``
@@ -31,6 +32,7 @@ def load_environment(global_conf, app_conf):
     config['routes.map'] = make_map()
     config['pylons.app_globals'] = app_globals.Globals()
     config['pylons.h'] = hackertalks.lib.helpers
+    config['pylons.email'] = email
 
     # Create the Jinja2 Environment
     config['pylons.app_globals'].jinja2_env = Environment(loader=ChoiceLoader(

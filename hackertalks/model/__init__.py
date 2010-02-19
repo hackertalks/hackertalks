@@ -101,7 +101,9 @@ class FeaturedTalk(Base):
     
 
 class StumbleSession(Base):
-    """ current or past record of an user stumblin' around """
+    """ current or past record of an user stumblin' around
+        we _could_ save the search params in here. just sayin'.
+    """
     __tablename__ = 'stumble_session'
 
     id = sa.Column(sa.types.Integer(), primary_key=True)

@@ -7,6 +7,7 @@ from pylons.decorators import rest, secure, jsonify
 from tw.mods.pylonshf import validate
 
 
+from hackertalks import email
 from hackertalks.lib.base import BaseController, render_mako
 from hackertalks.lib.helpers import failure_flash, success_flash
 from hackertalks.lib.mail import EmailMessage
@@ -43,8 +44,7 @@ class AccountsController(BaseController):
             # Valid e-mail token, remove it and log the user in
             user.email_token = user.email_token_issue = None
             user.process_login()
-            success_flash('Your email has been verified, and you have been'
-                          ' logged into PylonsHQ')
+            success_flash('Your email has been verified, and you have been logged in')
             redirect_to('home')
         else:
             # No valid e-mail token
@@ -60,9 +60,9 @@ class AccountsController(BaseController):
         user.password_token_issue = datetime.utcnow()
         Session.commit()
 
-        message = EmailMessage(subject="PylonsHQ - Lost Password", 
+        message = EmailMessage(subject="%s - Lost Password" % email.PRODUCT_NAME,
                                body=render_mako('/email/lost_password.mako'),
-                               from_email="PylonsHQ <pylonshq@groovie.org>",
+                               from_email=email.FROM_EMAIL,
                                to=[self.form_result['email_address']])
         message.send(fail_silently=True)
         success_flash('An e-mail has been sent to your account to verify the password reset request.')
@@ -123,7 +123,7 @@ class AccountsController(BaseController):
     def _process_login(self):
         user = self.form_result['user']
         user.process_login()        
-        success_flash('You have logged into PylonsHQ')
+        success_flash('You have logged into %s' % email.PRODUCT_NAME)
         if session.get('redirect'):
             redir_url = session.pop('redirect')
             session.save()
@@ -197,9 +197,9 @@ class AccountsController(BaseController):
         
         
         # Send out the welcome email with the reg token
-        message = EmailMessage(subject="PylonsHQ - Registration Confirmation",
+        message = EmailMessage(subject="%s - Registration Confirmation" % email.PRODUCT_NAME,
                                body=render_mako('/email/register.mako'),
-                               from_email="PylonsHQ <pylonshq@groovie.org>",
+                               from_email=email.FROM_EMAIL,
                                to=[self.form_result['email_address']])
         message.send(fail_silently=True)
         
