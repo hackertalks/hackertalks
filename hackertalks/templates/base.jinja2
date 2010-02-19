@@ -18,6 +18,13 @@
 
 <body>
     <div class=container>
+        <div class="user" style="position: absolute; left: 50%; margin-left: 200px; z-index: 1000;">
+            {% if request.user %}
+                Hello {{request.user.displayname}}! ({{ h.link_to('logout', h.url_for('account_logout')) }})
+            {% else %}
+                {{ h.link_to('login', h.url_for('account_login')) }}
+            {% endif %}
+            </div>
         <a href="/">
             <div class=header>
             </div>

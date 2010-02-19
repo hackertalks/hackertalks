@@ -10,7 +10,7 @@ from hackertalks.lib.base import BaseController, render
 from hackertalks.model import Talk, StumbleSession, StumbleVisit, Tag
 from hackertalks.model import Human
 from hackertalks.model.meta import Session
-from hackertalks.controllers.halpers import has_taglist
+from hackertalks.controllers.halpers import has_taglist, get_user
 
 import datetime
 
@@ -20,7 +20,7 @@ class TalkController(BaseController):
     q = Session.query(Talk).order_by(Talk.id.desc())
 
     def __before__(self):
-        request.user = Session.query(Human).filter(Human.id==session['user_id']).one() if session.get('user_id', None) else None
+        request.user = get_user(session)
 
     @has_taglist()
     def index(self):

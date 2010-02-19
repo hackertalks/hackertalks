@@ -7,12 +7,14 @@ from hackertalks.lib.base import BaseController, render
 
 from hackertalks.model import FeaturedTalk, Talk
 from hackertalks.model.meta import Session
-from hackertalks.controllers.halpers import has_taglist
 from datetime import datetime
+from hackertalks.controllers.halpers import has_taglist, get_user
 
 log = logging.getLogger(__name__)
 
 class FrontpageController(BaseController):
+    def __before__(self):
+        request.user = get_user(session)
 
     @has_taglist()
     def index(self):

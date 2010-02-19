@@ -12,6 +12,7 @@ from hackertalks.lib.helpers import failure_flash, success_flash
 from hackertalks.lib.mail import EmailMessage
 from hackertalks.model import Human, forms
 from hackertalks.model.meta import Session
+from hackertalks.controllers.halpers import get_user
 
 log = logging.getLogger(__name__)
 
@@ -20,6 +21,7 @@ class AccountsController(BaseController):
     def __before__(self):
         c.active_tab = True
         c.active_sub = True
+        request.user = get_user(session)
 
     @rest.dispatch_on(POST='_forgot_password')
     def forgot_password(self):
@@ -97,10 +99,9 @@ class AccountsController(BaseController):
         redirect_to('account_login')
 
     def logout(self):
-        c.user.session_id = None
+        request.user.session_id = None
         Session.commit()
         session.clear()
-        session.expire()
         session.save()
         redir = request.GET.get('redir')
         success_flash('You have logged out of your session')
