@@ -114,5 +114,8 @@ class TalkController(BaseController):
         
         session['current'] = None
         session.save()
-        return 'zomg no moar stumbling!'
+
+        c.talks = []
+
+        return render('/talk/search.jinja2')
 

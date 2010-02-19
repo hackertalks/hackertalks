@@ -82,29 +82,19 @@ body {
     border-bottom: none;
 }
 
-/* #search_container {
-	display: none;
-	position: absolute;
-	left: -1px;
-	top: 23px;
-	background-image: url('images/search_box.png');
-	background-repeat: no-repeat;
-	width: 800px;
-	height: 132px;
-	z-index: 1;
-	text-align: left;
-	padding: 28px 40px;
-} */
-
 #stumble_container {
 	display: none;
 	position: absolute;
 	right: -1px;
 	top: 23px;
-	background-image: url('images/stumble_box.png');
-	width: 800px;
+	width: 758px;
 	height: 132px;
 	z-index: 1;
+    background-color: white;
+    color: black;
+	border-right: 2px solid #333333;
+	border-bottom: 3px solid #333333;
+	padding: 10px 20px 20px 20px;
 }
 
 #search_container {
@@ -112,21 +102,15 @@ body {
 	position: absolute;
 	left: -1px;
 	top: 23px;
-	/* background-image: url('images/feat_box_bottom_shadow.png'); */
-	background-image: url('images/search_line.png');
 	background-color: #FFFFFF;
-	/* background-repeat: repeat-x; */
 	background-repeat: repeat-y;
 	z-index: 1;
-	width: 800px;
-	height: 132px;
-	/* margin-top: -24px; */
+	width: 758px;
+	height: 75px;
 	border-right: 2px solid #333333;
 	border-bottom: 3px solid #333333;
-	/* padding-top: 25px; */
 	text-align: left;
-	/* padding: 28px 40px; */
-	padding: 0px 20px 20px 20px;
+	padding: 10px 20px 20px 20px;
 }
 
 .menu li:hover #search_container {
@@ -186,13 +170,7 @@ body {
 }
 
 .sheet {
-    height: 45px;
     padding: 0px 20px 20px 20px;
-/*    background-image: url('images/sheet_h-shade.png');
-    background-align: right;
-	margin-right: -10px;	*/
-/*	margin-top: -40px;*/
-	z-index: -1;
 }
 
 #footer {
@@ -216,11 +194,15 @@ p {
 	line-height: 16px;
 }
 
+.result {
+    margin-bottom: 16px;
+    clear: left;
+}
+
 .result_preview {
     float: left;
     width: 80px;
     height: 46px;
-    background-color: #000000;
 }
 
 /*h1 {
@@ -238,7 +220,6 @@ h2 {
 
 .result_txt {
     width: 640px;
-    float: right;
 	font-size: 12px;
 	line-height: 14px;
 }
@@ -286,4 +267,8 @@ ul li {
 #talk_context a {
     font-weight: bold;
     color: lightblue;
+}
+
+#sheet_container.nomtop {
+    margin-top: 0;
 }

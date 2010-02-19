@@ -3,9 +3,8 @@
 {% block title %}LOL{% endblock %}
 
 {% block content %}
-	<div class=container id=sheet_container>
-		<div class=sheet>
-			
+	<div class="container nomtop" id="sheet_container">
+		<div class="sheet">
 			{% for talk in c.talks -%}
                 <div class="result">
                     <a href="{{ talk.url }}">
@@ -23,35 +22,12 @@
                     </div>
                     </a>
                 </div>
+            {% else %}
+                <div class="result">
+                    Zu den Kriterien wurde kein Talk gefunden!
+                </div>
 			{%- endfor %}
 			
 		</div>
 	</div>
-
-<!--
-	<div class=container id=sheet_container>
-		<div class=sheet>
-            JALOL {{ talks }}
-			
-			{% for talk in c.talks -%}
-			
-                    <div class="result_preview">
-                        <img src='{{ talk.thumbnail_url }}' width='70' />
-                    </div>
-                    <div class="result_txt">
-                        <h2 class=result_title>
-                            {{ h.smart_truncate(talk.title, 64) }}<br />
-                        </h2>
-                        {{ h.smart_truncate(talk.description, 90) }}<br />
-                        {% for speaker in talk.speakers %}
-                            {{ speaker.name }}{% if speaker.job_title -%} {{ speaker.job_title }}{%- endif %},
-                        {% endfor %}
-                    </div>
-                </a>
-            </div>
-			
-			{%- endfor %}
-		</div>
-	</div>
--->
 {% endblock %}
