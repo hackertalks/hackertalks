@@ -17,25 +17,25 @@
 </head>
 
 <body>
-    <div class=container>
-        <div class="user" style="position: absolute; left: 50%; margin-left: 200px; z-index: 1000;">
+    <div class="container">
+        <div id="userbar">
             {% if request.user %}
                 Hello {{request.user.displayname}}! ({{ h.link_to('logout', h.url_for('account_logout')) }})
             {% else %}
-                {{ h.link_to('login', h.url_for('account_login')) }}
+                Hi there! Do we {{ h.link_to('know you', h.url_for('account_login')) }}?
             {% endif %}
             </div>
         <a href="/">
-            <div class=header>
+            <div class="header">
             </div>
         </a>
 	</div>
-	<div id=bar>
-		<div class=container>
-			<ul class=menu>
-				<li class=search>
-					<a href='search'>search</a>
-					<div id=search_container>
+	<div id="bar">
+		<div class="container">
+			<ul class="menu">
+				<li class="search">
+					<a href="search">search</a>
+					<div id="search_container">
 						<h2 class=result_title>Search our database for talks, conferences or speakers!</h2><br />
                             {{h.form(h.url(controller='talk',action='search'), method='get')}}
                                 {{h.text("search", class_="search", size="45")}}
@@ -44,9 +44,9 @@
 						</form>
 					</div>
 				</li>
-				<li class=stumble>
-					<a href='stumble'>stumble</a>
-                    <div id=stumble_container>
+				<li class="stumble">
+					<a href="stumble">stumble</a>
+                    <div id="stumble_container">
                         {{ h.form(h.url(controller='talk',action='stumble'), method='post')}}
                             {% for t in c.tags %}
                             <span class="tag">{{h.checkbox("tag", value=t.name)}} {{t.name}}</span>
@@ -69,7 +69,7 @@
 	{% block content %}
 	{% endblock content %}
 	
-	<div id=footer>
+	<div id="footer">
 		copylefted footer
 	</div>
 </body>

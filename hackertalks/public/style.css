@@ -219,6 +219,7 @@ h2 {
 
 
 .result_txt {
+    margin-left: 90px;
     width: 640px;
 	font-size: 12px;
 	line-height: 14px;
@@ -271,4 +272,17 @@ ul li {
 
 #sheet_container.nomtop {
     margin-top: 0;
+}
+
+#userbar {
+    position: absolute;
+    right: 50%;
+    margin-right: -400px;
+    z-index: 1000;
+    color: white;
+}
+
+#userbar a {
+    color: inherit;
+    text-decoration: underline;
 }
