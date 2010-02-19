@@ -31,27 +31,5 @@
 			</div>
 		</div>
 	</div>
-	<h1> {{ c.talk.title }} info! </h1>
-    {% set talk = c.talk %}
-    {% include 'talk.inc.jinja2' %}
-    {#
-	<p>
-		Language = {{c.talk.language.name}} <br />
-		Description = {{c.talk.description}} <br />
-		Speakers = {% for speaker in c.talk.speakers -%}
-			<a href="/speaker/{{speaker.id}}" alt="{{speaker.first_name}} {{speaker.last_name}}"> {{speaker.nickname}} </a>
-		{%- endfor %} <br />
-		Video Length = {{c.talk.video_duration}} <br />
-		Video Embedcode = {{c.talk.video_embedcode}} <br />
-		General = {{ c.talk.get() }} <br />
-		Test = {{ c.talk.get('title') }} <br />
-		Tags = 
-		<ul>
-			{% for tag in c.talk.tags -%}
-			</li> {{ tag.tag }}, </li>
-			{%- endfor %}
-		</ul>
-	</p>
-    #}
 {%- endblock content %}
 
