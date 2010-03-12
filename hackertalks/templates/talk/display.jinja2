@@ -23,11 +23,10 @@
 			</div>
 			<div class=feat_titlebar>
                 <a href="{{ c.talk.url }}">
-                    {{ h.smart_truncate(c.talk.short_title, 34) }}
+                    {{ h.smart_truncate(c.talk.title, 34) }}
                 </a>
 			</div>
 			<div class=feat_info>
-                {% include 'talk.inc.jinja2' %}
 			</div>
 		</div>
 	</div>

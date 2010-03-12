@@ -4,6 +4,7 @@ from paste.script.command import Command
 
 import hackertalks.model as model
 from hackertalks.model import meta
+import re
 
 from hackertalks.config.environment import load_environment
 from paste.deploy import appconfig
@@ -30,8 +31,14 @@ class Import_BlipUser(Command):
             t.thumbnail_url=item['blip_smallthumbnail']
             t.video_bliptv_id=item['blip_item_id']
             t.short_title=''
-            t.video_embedcode=item['media_player']
+            t.video_embedcode=item['media_player'].replace('embed', 'embed wmode="transparent"')
             t.video_duration=timedelta(seconds=int(item['blip_runtime']))
+            t.license=meta.Session.query(model.License).filter(model.License.name==item['blip_license']).one()
+
+
+            """ try to magically parse conference and speaker names """
+
+
 
             meta.Session.add(t)
             meta.Session.commit()

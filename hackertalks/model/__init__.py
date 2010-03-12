@@ -63,7 +63,8 @@ class Talk(Base):
     slug = sa.Column(sa.types.Unicode(), nullable=True, unique=True)
 
     ## We need a set list of licenses because they MUST be the same as where the videos are stored.
-    license = sa.Column(sa.types.Integer(), sa.ForeignKey('licenses.id'))
+    license_id = sa.Column(sa.types.Integer(), sa.ForeignKey('licenses.id'))
+    license = orm.relation(License, primaryjoin=license_id == License.id, backref="talks")
     
     speakers = orm.relation('Speaker', secondary=talks_speakers_table, backref='talks')
     tags = orm.relation('Tag', secondary=talks_tags_table, backref='talks')
