@@ -8,8 +8,6 @@ import re
 
 from hackertalks.config.environment import load_environment
 from paste.deploy import appconfig
-conf = appconfig('config:development.ini', relative_to='..')
-load_environment(conf.global_conf, conf.local_conf)
 
 class Import_BlipUser(Command):
     summary = "--NO SUMMARY--"
@@ -17,8 +15,12 @@ class Import_BlipUser(Command):
     group_name = "hackertalks"
     parser = Command.standard_parser(verbose=False)
 
+    parser.add_option('-c', '--config', dest="config", default="development.ini", help='config')
+
     def command(self):
-        meta.Session.commit()
+        conf = appconfig('config:%s' % self.options.config, relative_to='..')
+        load_environment(conf.global_conf, conf.local_conf)
+        
         x = feedparser.parse('http://%s.blip.tv/rss' % self.args[0])
 
         for item in x['entries']:
