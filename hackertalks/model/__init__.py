@@ -70,6 +70,9 @@ class Talk(Base):
     tags = orm.relation('Tag', secondary=talks_tags_table, backref='talks')
 
     def publish(self):
+        if self.slug and self.id:
+            return self
+
         speaker_names = u','.join(s.name for s in self.speakers)
         title = self.short_title if self.short_title else self.title
         base_slug = h.slugify(u'%s - %s' % (speaker_names, title))

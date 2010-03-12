@@ -17,7 +17,7 @@ import datetime
 log = logging.getLogger(__name__)
 
 class TalkController(BaseController):
-    q = Session.query(Talk).order_by(Talk.id.desc())
+    q = Talk.online().order_by(Talk.id.desc())
 
     def __before__(self):
         request.user = get_user(session)
@@ -95,7 +95,7 @@ class TalkController(BaseController):
 
         ss = Session.query(StumbleSession).get(curr['ssid'])
 
-        ts = Session.query(Talk).filter(Talk.video_duration\
+        ts = Talk.online().filter(Talk.video_duration\
                 .between(curr['duration'][0],
                          curr['duration'][1]
                          )

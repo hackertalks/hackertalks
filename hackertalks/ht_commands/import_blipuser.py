@@ -38,8 +38,23 @@ class Import_BlipUser(Command):
 
             """ try to magically parse conference and speaker names """
 
+            """ OSCON 09: Clay Johnson, "Apps for America" """
+            x = re.match('^([^:]+):([^"]+)"([^"]+)"$', t.title)
+            print t.title, x
+            if x:
+                name_match = x.groups()[1].strip().split(',')
+                name = name_match[0].strip()
+                job_title = name_match[1].strip() if len(name_match)>1 else ''
+
+                t.speakers=[]
+                for namestr in name.split(' and '):
+                    ss = meta.Session.query(model.Speaker).filter(model.Speaker.name==namestr).filter(model.Speaker.job_title==job_title).all()
+                    s = ss[0] if ss else model.Speaker(name=namestr, job_title=job_title)
+                    meta.Session.merge(s)
+                    t.speakers.append(s)
+                t.title=x.groups()[2]
 
 
-            meta.Session.add(t)
+            meta.Session.merge(t)
             meta.Session.commit()
 

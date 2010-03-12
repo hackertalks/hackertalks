@@ -23,10 +23,13 @@
 			</div>
 			<div class=feat_titlebar>
                 <a href="{{ c.talk.url }}">
-                    {{ h.smart_truncate(c.talk.title, 34) }}
+                    {{ c.talk.title }}
                 </a>
 			</div>
 			<div class=feat_info>
+                {% for x in c.talk.speakers %}
+                    {{x.name}} {{x.job_title or ''}}<br />
+                {% endfor %}
 			</div>
 		</div>
 	</div>
