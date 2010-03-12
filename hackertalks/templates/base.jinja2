@@ -37,7 +37,7 @@
 					<a href="search">search</a>
 					<div id="search_container">
 						<h2 class=result_title>Search our database for talks, conferences or speakers!</h2><br />
-                            {{h.form(h.url(controller='talk',action='search'), method='get')}}
+                            {{h.form(h.url(controller='talk',action='searchpoint'), method='get')}}
                                 {{h.text("search", class_="search", size="45")}}
                                 {{h.submit("","Search")}}
                             {{h.end_form()}}
