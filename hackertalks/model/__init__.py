@@ -57,7 +57,7 @@ class Talk(Base):
     recording_date = sa.Column(sa.types.Date())
     video_duration = sa.Column(sa.types.Interval())
     video_embedcode = sa.Column(sa.types.UnicodeText())
-    video_bliptv_id = sa.Column(sa.types.Integer())
+    video_bliptv_id = sa.Column(sa.types.Integer(), unique=True)
     conference = sa.Column(sa.types.Unicode(), nullable=True)
 
     slug = sa.Column(sa.types.Unicode(), nullable=True, unique=True)
@@ -78,6 +78,7 @@ class Talk(Base):
             m=u'%s%s' % (base_slug,x if x!=0 else u'')
             try:
                 self.slug = m
+                self.short_title = ''
                 meta.Session.merge(self)
                 meta.Session.commit()
                 return self
@@ -87,6 +88,10 @@ class Talk(Base):
     @property
     def url(self):
         return h.url_for('talk', slug=self.slug)
+
+    @classmethod
+    def online(self):
+        return meta.Session.query(Talk).filter(Talk.slug!=None)
 
     
 class FeaturedTalk(Base):
