@@ -37,6 +37,7 @@ setup(
     main = pylons.util:PylonsInstaller
     
     [paste.paster_command]
-    upload_dir = hackertalks.commands.upload_dir:Upload_Dir
+    upload_dir = hackertalks.ht_commands.upload_dir:Upload_Dir
+    import_blipuser = hackertalks.ht_commands.import_blipuser:Import_BlipUser
     """,
 )

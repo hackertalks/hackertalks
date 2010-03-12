@@ -58,6 +58,7 @@ class Talk(Base):
     video_duration = sa.Column(sa.types.Interval())
     video_embedcode = sa.Column(sa.types.UnicodeText())
     video_bliptv_id = sa.Column(sa.types.Integer())
+    conference = sa.Column(sa.types.Unicode(), nullable=True)
 
     slug = sa.Column(sa.types.Unicode(), nullable=True, unique=True)
 
