@@ -22,6 +22,7 @@ setup(
         "ToscaWidgets",
         "tw.forms",
         "psycopg2",
+        "egenix-mx-base", # apparently needed by psycopg2.
     ],
     setup_requires=["PasteScript>=1.6.3"],
     packages=find_packages(exclude=['ez_setup']),
