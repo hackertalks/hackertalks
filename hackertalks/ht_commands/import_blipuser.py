@@ -31,7 +31,11 @@ class Import_BlipUser(Command):
             t.description=item['description']
             t.conference=self.args[0]
             t.thumbnail_url=item['blip_smallthumbnail']
-            t.video_bliptv_id=item['blip_item_id']
+            try:
+                t.video_bliptv_id=item['blip_item_id']
+            except:
+                print """if you see this, either blip has changed their API (unlikely) or you don't have python-libxml2 installed which makes 
+                         feedparser behave awkwardly. """
             t.short_title=''
             t.video_embedcode=item['media_player'].replace('embed', 'embed wmode="transparent"')
             t.video_duration=timedelta(seconds=int(item['blip_runtime']))
