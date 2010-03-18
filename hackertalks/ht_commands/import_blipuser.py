@@ -24,18 +24,20 @@ class Import_BlipUser(Command):
         x = feedparser.parse('http://%s.blip.tv/rss' % self.args[0])
 
         for item in x['entries']:
-            ts = meta.Session.query(model.Talk).filter(model.Talk.video_bliptv_id==int(item['blip_item_id'])).all()
+            ts = []
+            try:
+                ts = meta.Session.query(model.Talk).filter(model.Talk.video_bliptv_id==int(item['blip_item_id'])).all()
+            except:
+                print """if you see this, either blip has changed their API (unlikely) or you don't have python-libxml2 installed which makes 
+                         feedparser behave awkwardly. """
+                return -1
             t = ts[0] if len(ts) else model.Talk()
 
             t.title=item['title']
             t.description=item['description']
             t.conference=self.args[0]
             t.thumbnail_url=item['blip_smallthumbnail']
-            try:
-                t.video_bliptv_id=item['blip_item_id']
-            except:
-                print """if you see this, either blip has changed their API (unlikely) or you don't have python-libxml2 installed which makes 
-                         feedparser behave awkwardly. """
+            t.video_bliptv_id=item['blip_item_id']
             t.short_title=''
             t.video_embedcode=item['media_player'].replace('embed', 'embed wmode="transparent"')
             t.video_duration=timedelta(seconds=int(item['blip_runtime']))
