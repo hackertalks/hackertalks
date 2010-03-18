@@ -58,7 +58,7 @@ class TalkController(BaseController):
     def searchpoint(self):
         s = request.GET.get('search','').lower()
         s = s.replace('/','_')
-        return redirect_to(action='search', kw=s)
+        return redirect_to(controller='talk', action='search', kw=s)
 
 
     @has_taglist()
