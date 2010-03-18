@@ -18,7 +18,7 @@ class Import_BlipUser(Command):
     parser.add_option('-c', '--config', dest="config", default="development.ini", help='config')
 
     def command(self):
-        conf = appconfig('config:%s' % self.options.config, relative_to='..')
+        conf = appconfig('config:%s' % self.options.config, relative_to='.')
         load_environment(conf.global_conf, conf.local_conf)
         
         x = feedparser.parse('http://%s.blip.tv/rss' % self.args[0])
