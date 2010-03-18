@@ -155,5 +155,6 @@ class Tag(Base):
         except sa.exceptions.SQLAlchemyError, e: # IntegrityError and FlushError encountered
             meta.Session.rollback()
             x = meta.Session.query(Tag).filter(Tag.name==name).one()
+        return x
 
 
