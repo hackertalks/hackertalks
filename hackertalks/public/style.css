@@ -55,7 +55,6 @@ a img {
 	float: left;
 	display: block;
 	width: 398px;
-	text-align: center;
 	margin: 0;
 	padding: 0;
     height: 23px;
@@ -99,6 +98,8 @@ a img {
 	border-right: 2px solid #333333;
 	border-bottom: 3px solid #333333;
 	padding: 10px 20px 20px 20px;
+
+    text-align: left;
 }
 
 #search_container {
@@ -115,6 +116,8 @@ a img {
 	border-bottom: 3px solid #333333;
 	text-align: left;
 	padding: 10px 20px 20px 20px;
+    
+    text-align: left;
 }
 
 .menu li:hover #search_container {
@@ -123,6 +126,28 @@ a img {
 
 .menu li:hover #stumble_container {
 	display: block;
+}
+
+#stumble_container ul {
+    margin: 0; padding: 0;
+    list-style-type: none;
+    clear: left;
+}
+#stumble_container .tag {
+    display: block;
+    width: 20%;
+    float: left;
+    overflow: hidden;
+}
+#stumble_container .tag input {
+    display: inline;
+}
+
+
+
+#stumble_container .duration,
+#stumble_container .btns {
+    clear: left;
 }
 
 #feat_box {

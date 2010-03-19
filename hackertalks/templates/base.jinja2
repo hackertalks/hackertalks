@@ -48,16 +48,21 @@
 					<a href="stumble">stumble</a>
                     <div id="stumble_container">
                         {{ h.form(h.url(controller='talk',action='stumble'), method='post')}}
+                            <ul class="tags">
                             {% for t in h.popular_tags() %}
-                            <span class="tag">{{h.checkbox("tag", value=t.name)}} {{t.name}}</span>
+                                <li class="tag">{{h.checkbox("tag", value=t.name)}}{{t.name[:15]}}</span>
                             {% endfor %}
+                            </ul>
 
-                            <div id="stumble_duration"></div>
+                            <div class="duration">
+                                <div id="stumble_duration"></div>
+                                {{h.hidden("duration_start", 10)}}
+                                {{h.hidden("duration_end", 90)}}
+                            </div>
 
-                            {{h.hidden("duration_start", 10)}}
-                            {{h.hidden("duration_end", 90)}}
-
-                            {{h.submit("", "go")}}
+                            <div class="btns">
+                                {{h.submit("", "go")}}
+                            </div>
 
                         {{h.end_form()}}
 					</div>

@@ -48,4 +48,4 @@ def popular_tags():
     import sqlalchemy as sa
     q = meta.Session.query(model.Tag,sa.func.count('*')).join(model.talks_tags_table).group_by(model.Tag.name, model.Tag.id).order_by('count_1')
 
-    return [x[0] for x in q[:25]]
+    return [x[0] for x in q[:15]]
