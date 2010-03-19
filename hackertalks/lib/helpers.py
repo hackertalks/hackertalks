@@ -41,3 +41,11 @@ def slugify(value):
     value = unicode(re.sub('[^\w\s-]', '', value).strip().lower())
     return re.sub('[-\s]+', '-', value)
 
+def popular_tags():
+    # the joy of circular imports
+    from hackertalks.model import meta
+    from hackertalks import model
+    import sqlalchemy as sa
+    q = meta.Session.query(model.Tag,sa.func.count('*')).join(model.talks_tags_table).group_by(model.Tag.name, model.Tag.id).order_by('count_1')
+
+    return [x[0] for x in q[:25]]

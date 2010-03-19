@@ -10,7 +10,7 @@ from hackertalks.lib.base import BaseController, render
 from hackertalks.model import Talk, StumbleSession, StumbleVisit, Tag
 from hackertalks.model import Human
 from hackertalks.model.meta import Session
-from hackertalks.controllers.halpers import has_taglist, get_user
+from hackertalks.controllers.halpers import get_user
 
 import datetime
 
@@ -22,12 +22,10 @@ class TalkController(BaseController):
     def __before__(self):
         request.user = get_user(session)
 
-    @has_taglist()
     def index(self):
         c.talks = self.q.limit(25)
         return render('talk/index.jinja2')
         
-    @has_taglist()
     def display(self, slug, context=None):
         c.talk = self.q.filter(Talk.slug == slug).all()[0]
         if c.talk != None:
@@ -54,14 +52,12 @@ class TalkController(BaseController):
         response.content_type = u'application/rss+xml'
         return feed.writeString('utf-8')
 
-    @has_taglist()
     def searchpoint(self):
         s = request.GET.get('search','').lower()
         s = s.replace('/','_')
         return redirect_to(controller='talk', action='search', kw=s)
 
 
-    @has_taglist()
     def search(self, kw):
         talks = self.q.filter(or_(func.lower(Talk.title).contains(kw),func.lower(Talk.description).contains(kw))).all()
 

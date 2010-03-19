@@ -48,7 +48,7 @@
 					<a href="stumble">stumble</a>
                     <div id="stumble_container">
                         {{ h.form(h.url(controller='talk',action='stumble'), method='post')}}
-                            {% for t in c.tags %}
+                            {% for t in h.popular_tags() %}
                             <span class="tag">{{h.checkbox("tag", value=t.name)}} {{t.name}}</span>
                             {% endfor %}
 

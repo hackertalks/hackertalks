@@ -43,6 +43,7 @@ class Import_BlipUser(Command):
             t.video_duration=timedelta(seconds=int(item['blip_runtime']))
             t.license=meta.Session.query(model.License).filter(model.License.name==item['blip_license']).one()
 
+
             t.tags=list(set([model.Tag.get_or_create(y['term'].lower()) for y in item['tags']]))
 
 
