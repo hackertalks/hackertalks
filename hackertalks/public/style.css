@@ -91,7 +91,6 @@ a img {
 	right: -1px;
 	top: 23px;
 	width: 758px;
-	height: 132px;
 	z-index: 1;
     background-color: white;
     color: black;
@@ -128,6 +127,11 @@ a img {
 	display: block;
 }
 
+#stumble_container h2 {
+    color: gray;
+    font-size: 1em;
+    clear: left;
+}
 #stumble_container ul {
     margin: 0; padding: 0;
     list-style-type: none;
