@@ -24,6 +24,7 @@ setup(
         "psycopg2",
         "fixture",
         "feedparser",
+        "pytz", # needed by registration, apparently
     ],
     setup_requires=["PasteScript>=1.6.3"],
     packages=find_packages(exclude=['ez_setup']),
