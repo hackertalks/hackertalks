@@ -83,7 +83,8 @@ class TalkController(BaseController):
     def stumble_next(self):
         curr = session.get('current', None)
         if not curr:
-            return 'no stumble session!'
+            c.talks = []
+            return render('/talk/search.jinja2')
 
         ss = Session.query(StumbleSession).get(curr['ssid'])
 
