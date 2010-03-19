@@ -5,7 +5,7 @@ from pylons.controllers.util import abort, redirect_to, url_for
 
 from hackertalks.lib.base import BaseController, render
 
-from hackertalks.model import Talk, StumbleSession, StumbleVisit, Tag, talks_tags_table
+from hackertalks.model import Talk, StumbleSession, StumbleVisit, Tag
 from hackertalks.model import Human
 from hackertalks.model.meta import Session
 from hackertalks.controllers.halpers import get_user
