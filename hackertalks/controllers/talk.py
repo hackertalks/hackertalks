@@ -1,13 +1,11 @@
 import logging
 
-from sqlalchemy import or_, func
-
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort, redirect_to, url_for
 
 from hackertalks.lib.base import BaseController, render
 
-from hackertalks.model import Talk, StumbleSession, StumbleVisit, Tag
+from hackertalks.model import Talk, StumbleSession, StumbleVisit, Tag, talks_tags_table
 from hackertalks.model import Human
 from hackertalks.model.meta import Session
 from hackertalks.controllers.halpers import get_user
@@ -59,9 +57,7 @@ class TalkController(BaseController):
 
 
     def search(self, kw):
-        talks = self.q.filter(or_(func.lower(Talk.title).contains(kw),func.lower(Talk.description).contains(kw))).all()
-
-        c.talks = talks
+        c.talks = Talk.find(kw)
 
         session['current'] = {'type': 'search',
                 'term': kw

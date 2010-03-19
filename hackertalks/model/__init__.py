@@ -7,6 +7,8 @@ import datetime
 
 from hackertalks.model import meta
 from hackertalks.model.human import Human, OpenID
+        
+from sqlalchemy import or_, func
 
 Base = meta.Base
 
@@ -96,6 +98,15 @@ class Talk(Base):
     @classmethod
     def online(self):
         return meta.Session.query(Talk).filter(Talk.slug!=None)
+
+    @classmethod
+    def find(self, kw):
+        return self.online().join(talks_tags_table).join(Tag).filter(
+                or_(func.lower(Talk.title).contains(kw),
+                    func.lower(Talk.description).contains(kw),
+                    Tag.name.contains(kw),
+                    )).all()
+
 
     
 class FeaturedTalk(Base):
