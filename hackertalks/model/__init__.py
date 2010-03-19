@@ -146,6 +146,7 @@ class Tag(Base):
 
     @classmethod
     def get_or_create(cls, name):
+        name = [y for y in name if y.isalnum()]
         try:
             meta.Session.begin_nested()
             x = Tag()
