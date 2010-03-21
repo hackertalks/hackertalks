@@ -34,7 +34,13 @@
 		<div class="container">
 			<ul class="menu">
 				<li class="search">
-					<a href="search">search</a>
+                    {% if session.current.term %}<a href="{{h.url_for(controller='talk', action='search', kw=session.current.term)}}">
+                        search "{{session.current.term}}"
+                    </a>
+                    {%else%}
+                    search
+                    {%endif %}
+                    
 					<div id="search_container">
 						<h2 class=result_title>Search our database for talks, conferences or speakers!</h2><br />
                             {{h.form(h.url(controller='talk',action='searchpoint'), method='get')}}
@@ -45,13 +51,14 @@
 					</div>
 				</li>
 				<li class="stumble">
-					<a href="stumble">stumble</a>
+                    {% if session['current']['type']=='stumble' %}<a href="{{h.url_for('talk_stumble_next')}}">stumble on</a>
+                    {% else %}stumble{%endif %}
                     <div id="stumble_container">
                         {{ h.form(h.url(controller='talk',action='stumble'), method='post')}}
                             <h2>Tags</h2>
                             <ul class="tags">
                             {% for t in h.popular_tags() %}
-                                <li class="tag">{{h.checkbox("tag", value=t.name)}}{{t.name[:15]}}</span>
+                                <li class="tag">{{h.checkbox("tag", value=t.name, checked=(t.name in session['current']['tags']))}}{{t.name[:15]}}</span>
                             {% endfor %}
                             </ul>
 
@@ -60,8 +67,8 @@
                                 <span id="duration_start_display"></span> -
                                 <span id="duration_end_display"></span> Minutes
                                 <div id="stumble_duration"></div>
-                                {{h.hidden("duration_start", 10)}}
-                                {{h.hidden("duration_end", 90)}}
+                                {{h.hidden("duration_start", (session.current.duration.0.seconds/60)|int or 10)}}
+                                {{h.hidden("duration_end", (session.current.duration.1.seconds/60)|int or 90)}}
                             </div>
 
                             <div class="btns">
