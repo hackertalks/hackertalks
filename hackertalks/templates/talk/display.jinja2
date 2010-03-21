@@ -5,33 +5,40 @@
 {%- endblock title %}
 
 {% block content -%}
-    {% if session['current'] %}
-        <div id="talk_context">
-            {% if session['current']['type'] == 'stumble' %}
-                {{ h.link_to('stumble on!', h.url_for('talk_stumble_next')) }}
-            {% endif %}
-            {% if session['current']['type'] == 'search' %}
-                {{ h.link_to('back to search', h.url_for('talk_search', kw=session['current']['term'])) }}
-            {% endif %}
-        </div>
-    {% endif %}
 	<div id=feat_box>
 		<div class=container>
-            {% set talk = c.talk %}
 			<div class=feat_preview>
 				{{ c.talk.video_embedcode }}
 			</div>
-			<div class=feat_titlebar>
+		</div>
+	</div>
+    <div id="sheet_container" class="container">
+    <div class="sheet">
+			<h2>
                 <a href="{{ c.talk.url }}">
                     {{ c.talk.title }}
                 </a>
-			</div>
+			</h2>
 			<div class=feat_info>
                 {% for x in c.talk.speakers %}
                     {{x.name}} {{x.job_title or ''}}<br />
                 {% endfor %}
 			</div>
-		</div>
-	</div>
+            <div>
+                {{c.talk.description}}
+            </div>
+            {% if c.talk.conference %}
+            <div>
+                Held at {{c.talk.conference}}<br />
+                {% if c.talk.recording_date %}
+                    on {{c.talk.recording_date}}
+                {% endif %}
+            </div>
+            {% endif %}
+            <div>
+                <img src="{{c.talk.license.thumbnail}}" alt="{{c.talk.license.name}}" />
+            </div>
+    </div>
+    </div>
 {%- endblock content %}
 
