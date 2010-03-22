@@ -67,8 +67,8 @@
                                 <span id="duration_start_display"></span> -
                                 <span id="duration_end_display"></span> Minutes
                                 <div id="stumble_duration"></div>
-                                {{h.hidden("duration_start", (session.current.duration.0.seconds/60)|int or 10)}}
-                                {{h.hidden("duration_end", (session.current.duration.1.seconds/60)|int or 90)}}
+                                {{h.hidden("duration_start", (session.current and session.current.get(duration) and session.current.duration.0.seconds/60)|int or 10)}}
+                                {{h.hidden("duration_end", (session.current and session.current.get(duration) and session.current.duration.1.seconds/60)|int or 90)}}
                             </div>
 
                             <div class="btns">
