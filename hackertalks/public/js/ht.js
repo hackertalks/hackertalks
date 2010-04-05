@@ -17,9 +17,11 @@ $(function() {
 
 var lights = {
     'on': function() {
+        document.body.className='';
         $('.overlay').animate({opacity: 0}, 1000, function() { $('.overlay').remove(); });
     },
     'out': function() {
+        document.body.className='lightsoff';
         $('#talk_container').absolutize_keeplayout();
         $('#talk_container').css('z-index', 100);
         if($('#talk_container').css('background-image')) {
@@ -40,5 +42,11 @@ var lights = {
         e.style.opacity=0;
         $(e).animate({opacity: 1});
         document.body.appendChild(e);
+    },
+    'toggle': function() {
+        if(document.body.className=='lightsoff')
+            lights.on();
+        else
+            lights.out();
     }
 };

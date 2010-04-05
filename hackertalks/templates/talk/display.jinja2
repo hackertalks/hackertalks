@@ -11,7 +11,7 @@
         </div>
 	</div>
     <div id="sheet_container" class="container">
-    <div class="sheet">
+        <div class="sheet">
 			<h2>
                 <a href="{{ c.talk.url }}">
                     {{ c.talk.title }}
@@ -36,7 +36,9 @@
             <div class="license">
                 <img src="{{c.talk.license.thumbnail}}" alt="{{c.talk.license.name}}" />
             </div>
+        </div>
     </div>
+    <div id="lightbulb_container" onclick="lights.toggle();">
     </div>
 {%- endblock content %}
 

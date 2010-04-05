@@ -91,7 +91,7 @@ a img {
 	right: -1px;
 	top: 23px;
 	width: 758px;
-	z-index: 1;
+	z-index: 102;
     background-color: white;
     color: black;
 	border-right: 2px solid #333333;
@@ -108,7 +108,7 @@ a img {
 	top: 23px;
 	background-color: #FFFFFF;
 	background-repeat: repeat-y;
-	z-index: 1;
+	z-index: 102;
 	width: 758px;
 	height: 75px;
 	border-right: 2px solid #333333;
@@ -327,11 +327,26 @@ ul li {
     position: absolute;
     right: 50%;
     margin-right: -400px;
-    z-index: 1000;
+    z-index: 98;
     color: white;
 }
 
 #userbar a {
     color: inherit;
     text-decoration: underline;
+}
+
+#lightbulb_container {
+    width: 128px;
+    height: 128px;
+    top: 0;
+    right: 0;
+    position: fixed;
+    background-image: url('/images/Light Bulb Off.png');
+    z-index: 102;
+    opacity: 0.5;
+}
+
+body.lightsoff #lightbulb_container {
+    background-image: url('/images/Light Bulb On.png');
 }
