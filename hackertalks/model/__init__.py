@@ -104,6 +104,7 @@ class Talk(Base):
         return self.online().join(talks_tags_table).join(Tag).filter(
                 or_(func.lower(Talk.title).contains(kw),
                     func.lower(Talk.description).contains(kw),
+                    func.lower(Talk.conference).contains(kw),
                     Tag.name.contains(kw),
                     )).all()
 

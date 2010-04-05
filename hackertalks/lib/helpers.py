@@ -12,6 +12,7 @@ from routes import url_for, url_for as url
 from webhelpers.pylonslib import Flash as _Flash
 from pylons import session
 import re
+from markdown import markdown
 
 success_flash = _Flash('success')
 failure_flash = _Flash('failure')
@@ -49,3 +50,4 @@ def popular_tags():
     q = meta.Session.query(model.Tag,sa.func.count('*')).join(model.talks_tags_table).group_by(model.Tag.name, model.Tag.id).order_by(sa.desc('count_1'))
 
     return [x[0] for x in q[:15]]
+

@@ -5,8 +5,8 @@
 {%- endblock title %}
 
 {% block content -%}
-	<div id="feat_box" style="height: auto; width: auto;">
-        <div style="text-align: center;">
+	<div id="feat_box" class="talk">
+        <div style="text-align: center;" id="talk_container">
             {{ c.talk.video_embedcode }}
         </div>
 	</div>
@@ -17,23 +17,23 @@
                     {{ c.talk.title }}
                 </a>
 			</h2>
-			<div class=feat_info>
+			<div class="speakers">
                 {% for x in c.talk.speakers %}
                     {{x.name}} {{x.job_title or ''}}<br />
                 {% endfor %}
 			</div>
-            <div>
-                {{c.talk.description}}
+            <div class="desc">
+                {{ h.markdown(c.talk.description) }}
             </div>
             {% if c.talk.conference %}
-            <div>
+            <div class="conference">
                 Held at {{c.talk.conference}}<br />
                 {% if c.talk.recording_date %}
                     on {{c.talk.recording_date}}
                 {% endif %}
             </div>
             {% endif %}
-            <div>
+            <div class="license">
                 <img src="{{c.talk.license.thumbnail}}" alt="{{c.talk.license.name}}" />
             </div>
     </div>

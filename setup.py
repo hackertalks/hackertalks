@@ -25,6 +25,8 @@ setup(
         "fixture",
         "feedparser",
         "pytz", # needed by registration, apparently
+        "html2text",
+        "markdown",
     ],
     setup_requires=["PasteScript>=1.6.3"],
     packages=find_packages(exclude=['ez_setup']),

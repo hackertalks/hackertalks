@@ -155,16 +155,24 @@ a img {
 }
 
 #feat_box {
+    height: 347px;
+    background-image: url('images/featured_box.png');
+	background-repeat: repeat-x;
+	background-position: top;
+}
+
+#feat_box.talk {
     position: relative;
 	/* this height defines where the white sheet starts (from top): */
-    height: 347px;
     background-image: url('images/featured_box_bottom.png');
 	background-repeat: repeat-x;
 	background-position: bottom;
     padding-bottom: 25px;
+    height: auto;
+    width: auto;
 }
 
-#feat_box div {
+#feat_box.talk div {
     background-image: url('images/featured_box_top.png');
 	background-repeat: repeat-x;
 	background-position: top;

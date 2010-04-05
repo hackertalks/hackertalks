@@ -8,10 +8,11 @@ import re
 
 from hackertalks.config.environment import load_environment
 from paste.deploy import appconfig
+from html2text import html2text
 
 class Import_BlipUser(Command):
-    summary = "--NO SUMMARY--"
-    usage = "--NO USAGE--"
+    summary = "import $username.blip.tv"
+    usage = "import_blipuser $username --config $configfile"
     group_name = "hackertalks"
     parser = Command.standard_parser(verbose=False)
 
@@ -33,10 +34,11 @@ class Import_BlipUser(Command):
                 return -1
             t = ts[0] if len(ts) else model.Talk()
 
-            t.title=item['title']
-            t.description=item['description']
+            t.title=item['title'].strip()
+            t.description=html2text(item['description'].replace(t.title, ''))
+
             t.conference=self.args[0]
-            t.thumbnail_url=item['blip_smallthumbnail']
+            t.thumbnail_url=item.get('blip_smallthumbnail', item.get('media_thumbnail', item.get('blip_picture', None)))
             t.video_bliptv_id=item['blip_item_id']
             t.short_title=''
             t.video_embedcode=item['media_player'].replace('embed', 'embed wmode="transparent"')
@@ -46,26 +48,38 @@ class Import_BlipUser(Command):
 
             t.tags=list(set([model.Tag.get_or_create(y['term'].lower()) for y in item['tags']]))
 
-
-            """ try to magically parse conference and speaker names """
-
-            """ OSCON 09: Clay Johnson, "Apps for America" """
-            x = re.match('^([^:]+):([^"]+)"([^"]+)"$', t.title)
-            print t.title, x
-            if x:
-                name_match = x.groups()[1].strip().split(',')
-                name = name_match[0].strip()
-                job_title = name_match[1].strip() if len(name_match)>1 else ''
-
-                t.speakers=[]
-                for namestr in name.split(' and '):
-                    ss = meta.Session.query(model.Speaker).filter(model.Speaker.name==namestr).filter(model.Speaker.job_title==job_title).all()
-                    s = ss[0] if ss else model.Speaker(name=namestr, job_title=job_title)
-                    meta.Session.merge(s)
-                    t.speakers.append(s)
-                t.title=x.groups()[2]
-
+            t = self.parseStuff(t)
 
             meta.Session.merge(t)
             meta.Session.commit()
+
+
+    def parseStuff(self, t):
+        """ try to magically parse conference and speaker names """
+
+        """ conference:title """
+        """ OSCON 09: Clay Johnson, "Apps for America" """
+        x = re.match(r'^([^:]+):(.*)$', t.title)
+        if x:
+            t.conference=x.groups()[0].strip()
+            t.title=x.groups()[1].strip()
+
+        """ speakers, "title" """
+        x = re.match(r'^([^"]+)"([^"]+)"$', t.title)
+        if x:
+            name_match = x.groups()[0].strip().split(',')
+            name = name_match[0].strip()
+            job_title = name_match[1].strip() if len(name_match)>1 else ''
+
+
+            t.speakers=[]
+            for namestr in name.split(' and '):
+                ss = meta.Session.query(model.Speaker).filter(model.Speaker.name==namestr).filter(model.Speaker.job_title==job_title).all()
+                s = ss[0] if ss else model.Speaker(name=namestr, job_title=job_title)
+                meta.Session.merge(s)
+                t.speakers.append(s)
+            print t.speakers
+            t.title=x.groups()[1]
+        return t
+
 
