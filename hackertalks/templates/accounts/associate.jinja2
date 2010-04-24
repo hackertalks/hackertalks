@@ -1,19 +1,17 @@
-<%!
-    from hackertalks.model.forms import login_form
-    from hackertalks import email
-%>
-<div class="yui-b content">
-    <h1>${_('OpenID Association')}</h1>
+{% extends "base.jinja2" %}
+{% block content -%}
+<div class="content">
+    <h1>OpenID Association</h1>
     
-    <p>${_('''The OpenID URL you used (<b>%s</b>) was not found
+    <p>The OpenID URL you used (<b>{{c.openid}}</b>) was not found
         in our database. If you would like to associate this OpenID URL with
         an existing account so that you can use this OpenID URL to login with
-        in the future, proceed below.''' % c.openid)}</p>
+        in the future, proceed below.</p>
     
-    <p>${_('If you would like to register with %s instead,' % email.PRODUCT_NAME)}
+    <p>If you would like to register with {{email.PRODUCT_NAME}} instead
         ${h.link_to(_('continue on to the registration page'), url=url('openid_register'))}.
     
-    ${login_form(action=url('openid_associate')) | n}
+    {{ h.accountforms.login_form(action=url('openid_associate')) }}
 </div>
-<%def name="title()">${parent.title()} - ${_('Associate OpenID Account')}</%def>
-<%inherit file="../layout.mako" />
+{%- endblock content %}
+{% block title %}{{Associate OpenID Account}}{% endblock title %}

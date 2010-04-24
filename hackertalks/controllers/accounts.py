@@ -130,56 +130,6 @@ class AccountsController(BaseController):
             redirect_to(redir_url)
         redirect_to('home')
     
-    @rest.dispatch_on(POST='_process_openid_associate')
-    def openid_associate(self):
-        openid_url = session.get('openid_identity')
-        if not openid_url:
-            redirect_to('account_register')
-        c.openid = openid_url
-        return render_mako('/accounts/associate.mako')
-    
-    @validate(form=forms.login_form, error_handler='login')
-    def _process_openid_associate(self):
-        openid_url = session.get('openid_identity')
-        user = self.form_result['user']
-        oi = OpenID()
-        oi.openid = openid_url
-        oi.user = user
-        Session.add(oi)
-        Session.commit()
-        user.process_login()
-        success_flash('You have associated your OpenID to your account, and signed in')
-        if session.get('redirect'):
-            redir_url = session.pop('redirect')
-            session.save()
-            redirect_to(redir_url)
-        redirect_to('home')
-    
-    @rest.dispatch_on(POST='_process_openid_registration')
-    def openid_register(self):
-        openid_url = session.get('openid_identity')
-        if not openid_url:
-            redirect_to('account_register')
-        c.openid = session.get('openid_identity')
-        c.defaults = {}
-        return render_mako('/accounts/register.mako')
-    
-    @validate(form=forms.openid_registration_form, error_handler='openid_register')
-    def _process_openid_registration(self):
-        new_user = Human(displayname=self.form_result['displayname'],
-                         timezone = self.form_result['timezone'],
-                         email=self.form_result['email_address'])
-        oi = OpenID()
-        oi.openid = session['openid_identity']
-        oi.user = new_user
-        Session.add(oi)
-        return self._finish_registration(new_user)
-    
-    @rest.dispatch_on(POST='_process_registration')
-    def register(self):
-        c.openid = None
-        return render_mako('/accounts/register.mako')
-
     @validate(form=forms.registration_form, error_handler='register')
     @secure.authenticate_form
     def _process_registration(self):
