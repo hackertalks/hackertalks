@@ -26,7 +26,7 @@ class AccountsController(BaseController):
 
     @rest.dispatch_on(POST='_forgot_password')
     def forgot_password(self):
-        return render_mako('/accounts/forgot_password.mako')
+        return render('/accounts/forgot_password.jinja2')
     
     def verify_email(self, token):
         users = Session.query(Human).filter(Human.email_token==token).all()
@@ -62,7 +62,7 @@ class AccountsController(BaseController):
 
         message = EmailMessage(subject="%s - Lost Password" % email.PRODUCT_NAME,
                                body=render_mako('/email/lost_password.mako'),
-                               from_email=email.FROM_EMAIL,
+                               from_email=email.FROM_ADDRESS,
                                to=[self.form_result['email_address']])
         message.send(fail_silently=True)
         success_flash('An e-mail has been sent to your account to verify the password reset request.')
@@ -80,7 +80,7 @@ class AccountsController(BaseController):
         if diff.days > 1 or diff.seconds > 3600:
             failure_flash('Password token is no longer valid, please make a new password reset request.')
             redirect_to('forgot_password')
-        return render_mako('/accounts/change_password.mako')
+        return render('/accounts/change_password.jinja2')
     
     @validate(form=forms.change_password_form, error_handler='change_password')
     @secure.authenticate_form
@@ -130,6 +130,11 @@ class AccountsController(BaseController):
             redirect_to(redir_url)
         redirect_to('home')
     
+    @rest.dispatch_on(POST='_process_registration')
+    def register(self):
+        c.openid = None
+        return render('/accounts/register.jinja2')
+
     @validate(form=forms.registration_form, error_handler='register')
     @secure.authenticate_form
     def _process_registration(self):
@@ -149,7 +154,7 @@ class AccountsController(BaseController):
         # Send out the welcome email with the reg token
         message = EmailMessage(subject="%s - Registration Confirmation" % email.PRODUCT_NAME,
                                body=render_mako('/email/register.mako'),
-                               from_email=email.FROM_EMAIL,
+                               from_email=email.FROM_ADDRESS,
                                to=[self.form_result['email_address']])
         message.send(fail_silently=True)
         

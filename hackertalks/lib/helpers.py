@@ -17,6 +17,7 @@ from hackertalks.model import meta, forms as accountforms
 from hackertalks import model
 import sqlalchemy as sa
 from globalhelpers import *
+import email
 
 success_flash = _Flash('success')
 failure_flash = _Flash('failure')
@@ -37,7 +38,6 @@ def format_duration(delta):
         return '%d:%02d min' % (minutes, seconds % 60)
 
 def popular_tags():
-    # the joy of circular imports
     q = meta.Session.query(model.Tag,sa.func.count('*')).join(model.talks_tags_table).group_by(model.Tag.name, model.Tag.id).order_by(sa.desc('count_1'))
 
     return [x[0] for x in q[:15]]

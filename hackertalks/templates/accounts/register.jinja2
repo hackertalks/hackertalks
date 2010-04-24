@@ -1,41 +1,17 @@
-<%!
-    from hackertalks.model.forms import registration_form, openid_login_form, openid_registration_form
-    from hackertalks import email
-%>
+{% extends "base.jinja2" %}
+
+{% block content %}
 <div class="yui-b content">
-    % if c.openid:
-    <h1>${_('Finish Registration')}</h1>
+    <h1>Register for an Account</h1>
     
-    <p>${_('Using OpenID: %s' % c.openid)}</p>
+    <p>These will be used to identify you as you contribute on the {{h.email.PRODUCT_NAME}} site. Notifications
+        from the system will be sent to this email address, as well as lost password requests.</p>
     
-    ${openid_registration_form(c.defaults, action=url('openid_register')) | n}
+    <p><b>Note: </b>A valid e-mail address is required to activate your
+        account.</p>
     
-    % else:
-    <h1>${_('Register for an Account')}</h1>
+    {{ h.accountforms.registration_form(action=url('account_register'))}}
     
-    <p>${_('Create an account for the %s site. This account will let you:') % email.PRODUCT_NAME}
-        <ul>
-            <li>${_('Post Snippets, Jobs, and Sites')}</li>
-            <li>${_("Comment on Tracebacks, Snippets, and Pastes'")}</li>
-        </ul>
-    </p>
-    
-    <p>${_("""These will be used to identify you as you contribute on the %s site. Notifications
-        from the system will be sent to this email address, as well as lost password requests""" % email.PRODUCT_NAME)}.</p>
-    
-    <p>${_("""<b>Note: </b>A valid e-mail address is required to activate your
-        account.""") |n}</p>
-    
-    ${registration_form(action=url('account_register')) | n}
-    
-    <div id="openid_reg">
-        <h3>${_('Register with OpenID')}</h3>
-        <p>${_("""To speed up registration, using OpenID will automatically fill-in details
-            that from the OpenID provider.""")}</p>
-        
-        ${openid_login_form(action=url('openid_create')) | n}
-    </div>
-    % endif
 </div>
-<%def name="title()">${parent.title()} - ${_('Registration')}</%def>
-<%inherit file="../layout.mako" />
+{% endblock content %}
+{% block title %}Register your account{% endblock %}
