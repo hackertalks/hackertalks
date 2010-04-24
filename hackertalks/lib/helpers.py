@@ -13,6 +13,10 @@ from webhelpers.pylonslib import Flash as _Flash
 from pylons import session
 import re
 from markdown import markdown
+from hackertalks.model import meta, forms as accountforms
+from hackertalks import model
+import sqlalchemy as sa
+from globalhelpers import *
 
 success_flash = _Flash('success')
 failure_flash = _Flash('failure')
@@ -32,22 +36,8 @@ def format_duration(delta):
     else:
         return '%d:%02d min' % (minutes, seconds % 60)
 
-def slugify(value):
-    """
-    Normalizes string, converts to lowercase, removes non-alpha characters,
-    and converts spaces to hyphens.
-    """
-    import unicodedata
-    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
-    value = unicode(re.sub('[^\w\s-]', '', value).strip().lower())
-    return re.sub('[-\s]+', '-', value)
-
 def popular_tags():
     # the joy of circular imports
-    from hackertalks.model import meta
-    from hackertalks import model
-    import sqlalchemy as sa
     q = meta.Session.query(model.Tag,sa.func.count('*')).join(model.talks_tags_table).group_by(model.Tag.name, model.Tag.id).order_by(sa.desc('count_1'))
 
     return [x[0] for x in q[:15]]
-

@@ -8,7 +8,7 @@ from tw.mods.pylonshf import validate
 
 
 from hackertalks import email
-from hackertalks.lib.base import BaseController, render_mako
+from hackertalks.lib.base import BaseController, render_mako, render
 from hackertalks.lib.helpers import failure_flash, success_flash
 from hackertalks.lib.mail import EmailMessage
 from hackertalks.model import Human, forms
@@ -116,7 +116,7 @@ class AccountsController(BaseController):
         if redir and redir.startswith('/') and redir != url('account_login'):
             session['redirect'] = str(redir)
             session.save()
-        return render_mako('/accounts/login.mako')
+        return render('/accounts/login.jinja2')
     
     @validate(form=forms.login_form, error_handler='login')
     @secure.authenticate_form

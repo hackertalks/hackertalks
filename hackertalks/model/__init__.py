@@ -1,7 +1,7 @@
 """The application's model objects"""
 import sqlalchemy as sa
 from sqlalchemy import orm
-from hackertalks.lib import helpers as h
+from hackertalks.lib import globalhelpers as h
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
 
