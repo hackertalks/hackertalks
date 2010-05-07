@@ -101,7 +101,7 @@ class Talk(Base):
 
     @classmethod
     def find(self, kw):
-        return self.online().join(talks_tags_table).join(Tag).join(talks_speakers_table).join(Speaker).filter(
+        return self.online().outerjoin(talks_tags_table).outerjoin(Tag).outerjoin(talks_speakers_table).outerjoin(Speaker).filter(
                 or_(func.lower(Talk.title).contains(kw),
                     func.lower(Talk.description).contains(kw),
                     func.lower(Talk.conference).contains(kw),
