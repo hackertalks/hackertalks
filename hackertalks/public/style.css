@@ -154,6 +154,12 @@ a img {
     clear: left;
 }
 
+#stumble_container .btns input {
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 2em;
+}
+
 #feat_box {
     height: 347px;
     background-image: url('images/featured_box.png');
