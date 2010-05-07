@@ -4,6 +4,6 @@
         {{ speaker.name }} {% if speaker.job_title -%}({{ speaker.job_title }}){%- endif %}<br />
     {% endfor %}
 </p>
-<p>{{ talk.recording_date }}<br />
+<p>{% if talk.recording_date %}{{ talk.recording_date }}{% endif %}<br />
 {{ talk.video_duration }}</p>
 <p>{{ h.smart_truncate(talk.description, 134) }}</p>
