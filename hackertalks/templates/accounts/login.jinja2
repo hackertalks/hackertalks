@@ -1,10 +1,6 @@
 {% extends "base.jinja2" %}
 
 {% block content -%}
-
-<%!
-    from hackertalks.model.forms import login_form, openid_login_form
-%>
 <div class="content">
     <h1>Login</h1>
     {{ h.accountforms.login_form(action=url('account_login'))}}
