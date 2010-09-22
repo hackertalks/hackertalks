@@ -8,8 +8,10 @@ from hackertalks.lib.base import BaseController, render
 from hackertalks.model import Talk, StumbleSession, StumbleVisit, Tag
 from hackertalks.model import Human
 from hackertalks.model.meta import Session
+
 from hackertalks.controllers.halpers import get_user
 
+import jinja2
 import datetime
 
 log = logging.getLogger(__name__)
@@ -60,7 +62,7 @@ class TalkController(BaseController):
         c.talks = Talk.find(kw)
 
         session['current'] = {'type': 'search',
-                'term': kw
+                'term': jinja2.escape(kw)
                 }
         session.save()
         
