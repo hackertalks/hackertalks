@@ -1,56 +1,70 @@
-http://uploads.blip.tv/
+import pycurl
 
-def PostMultipart(url, fields, files):
-	content_type = 'multipart/form-data; boundary=%s' % MULTIPART_BOUNDARY
-	data = []
-	
-	for field_name, value in fields.iteritems():
-		data.append('--' + MULTIPART_BOUNDARY)
-		data.append('Content-Disposition: form-data; name="%s"' % field_name)
-		data.append('')
-		data.append(value)
-		
-	for (field_name, filename) in files:
-		data.append('--' + MULTIPART_BOUNDARY)
-		data.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (field_name, filename))
-		data.append('Content-Type: %s' % GetMimeType(filename))
-		data.append('')
-		data.append(open(filename).read())
-		
-	data.append('--' + MULTIPART_BOUNDARY + '--')
-	data.append('')
-	data = "\r\n".join(data)
-	
-	host, selector = urlparts = urlparse.urlsplit(url)[1:3]
-	h = httplib.HTTPConnection(host)
-	h.putrequest("POST", selector)
-	h.putheader("content-type", content_type)
-	h.putheader("content-length", len(data))
-	h.endheaders()
-	h.send(data)
-	response = h.getresponse()
-	return response.status, response.reason, response.read()    
+# hello.
 
-def GetMimeType(filename):
-	return mimetypes.guess_type(filename)[0] or 'application/octet-stream'
+import optparse
+import os
+import os.path
+import BeautifulSoup
 
-def Upload(video_id, username, password, title, description, filename):
-	fields = {
-		"post": "1",
-		"skin": "api",
-		"username": "$USERNAME",
-		"password": "$PASSWORD",
-		"filename": "$FILENAME",
-		"title": "$TITLE",
-	}
-	
-	file_field = "file"
-	fields[file_field + "_role"] = "Web"
-	files = [(file_field, filename)]
-	
-    print "Posting to", BLIP_UPLOAD_URL
-    print "Please wait..."
-    status, reason, response = PostMultipart(BLIP_UPLOAD_URL, fields, files)
-    print "Done."
 
-    return response
+body = ''
+def body_callback(buf):
+    body += buf
+
+
+if __name__ == '__main__':
+    writtenfiles = ''
+    try:
+        writtenfiles = open('hackertalks-progress.txt', 'r').read()
+    except Exception, e:
+        print e
+        pass
+    progressfile = open('hackertalks-progress.txt', 'a')
+
+    parser = optparse.OptionParser()
+#    parser.add_option('-m', '--manual-metadata', help="do not parse metadata from file names, expect input for them instead")
+
+    (opts, args) = parser.parse_args()
+
+    dirname = args[0] if len(args)>0 else '.'
+
+    for rn in os.listdir(dirname):
+        body = ''
+        fn = os.path.join(dirname, rn)
+        print fn
+
+        ap = os.path.realpath(fn)
+
+        (name, extension) = rn.rsplit('.',1)
+
+        if extension not in ('mp4','mpeg',):
+            print 'skipping %s' % fn
+            continue
+
+        c = pycurl.Curl()
+        c.setopt(c.URL, 'http://uploads.blip.tv/')
+        c.setopt(c.HTTPPOST, [('post', '1',),
+                              ('file', (pycurl.FORM_FILE, fn,),),
+                              ('license', '4',),
+                              ('title', name),
+                             ])
+        c.setopt(c.VERBOSE, 1)
+        c.setopt(c.WRITEFUNCTION, body_callback)
+        c.perform()
+        c.close()
+
+        progressfile.append('%s\n' % ap)
+        progressfile.flush()
+
+        id = BeautifulSoup.BeautifulSoup(body).find('id')
+
+        c = pycurl.Curl()
+        c.setopt(c.URL, HACKERTALKS_PING)
+        c.setopt(c.HTTPPOST, [('id', id,),
+                              ('auth_key', AUTHKEY,),
+                             ])
+        c.perform()
+        c.close()
+        
+        
