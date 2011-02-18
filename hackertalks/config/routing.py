@@ -31,7 +31,7 @@ def make_map():
     map.connect('speakerindex', '/speaker', controller='speaker', action='index')
     map.connect('speaker', '/speaker/{id}', controller='speaker', action='display')
 
-    map.connect('backend_ping', '/backend/ping', controller='backend', action='ping')
+    map.connect('backend_ping', '/api/ping', controller='backend', action='ping')
     
     # Accounts
     map.connect('account_login', '/accounts/login', controller='accounts', action='login')
