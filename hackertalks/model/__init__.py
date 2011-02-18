@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import datetime
 from datetime import timedelta
 from html2text import html2text
+from routes import url_for
 
 from hackertalks.model import meta
 from hackertalks.model.human import Human, OpenID
@@ -130,18 +131,20 @@ class Talk(Base):
             t = ts[0] if len(ts) else Talk()
 
             t.title=item['title'].strip()
-            t.description=html2text(item['description'].replace(t.title, ''))
+            t.description=html2text(item['description']).replace(t.title, '')
+
+
 
             t.conference=conference
             t.thumbnail_url=item.get('blip_smallthumbnail', item.get('media_thumbnail', item.get('blip_picture', None)))
             t.video_bliptv_id=item['blip_item_id']
             t.short_title=''
-            t.video_embedcode=item['media_player'].replace('embed', 'embed wmode="transparent"')
+            t.video_embedcode=item['media_player']['content'].replace('embed', 'embed wmode="transparent"')
             t.video_duration=timedelta(seconds=int(item['blip_runtime']))
             t.license=meta.Session.query(License).filter(License.name==item['blip_license']).one()
 
-
-            t.tags=list(set([Tag.get_or_create(y['term'].lower()) for y in item['tags']]))
+            print item['tags']
+            t.tags=list(set([Tag.get_or_create(unicode(y['term'].lower())) for y in item['tags']]))
 
             t = cls.import_blipurl_parseout(t)
 
@@ -231,14 +234,24 @@ class Tag(Base):
 
     @classmethod
     def get_or_create(cls, name):
+        print 'lalalalalala'
+        print 'lalalalalala'
+        print 'lalalalalala'
+        print name
         name = ''.join([y for y in name if y.isalnum()])
         try:
             meta.Session.begin_nested()
+            print 'BEGIN NESTED OVER'
             x = Tag()
             x.name = name
             meta.Session.add(x)
             meta.Session.commit()
         except sa.exceptions.SQLAlchemyError, e: # IntegrityError and FlushError encountered
+            print 'lalalalalala'
+            print 'lalalalalala'
+            print e
+            print 'lalalalalala'
+            print 'lalalalalala'
             meta.Session.rollback()
             x = meta.Session.query(Tag).filter(Tag.name==name).one()
         return x

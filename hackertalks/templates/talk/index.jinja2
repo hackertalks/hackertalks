@@ -4,7 +4,7 @@
 
 {% block head -%}
 {{ super() }}
-	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="{{h.url_for(controller='talks', action='feed', type='rss') }}" />
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="{{h.url(controller='talks', action='feed', type='rss') }}" />
 {% endblock head %}
 
 {% block content %}

@@ -1,7 +1,7 @@
 import logging
 
-from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to, url_for
+from pylons import request, response, session, tmpl_context as c, url
+from pylons.controllers.util import abort, redirect
 
 from hackertalks.lib.base import BaseController, render
 
@@ -38,7 +38,7 @@ class TalkController(BaseController):
         talks = self.q.limit(10)
         feed = Rss201rev2Feed(
             title=u'Hackertalks New Talks Feed',
-            link=url_for(),
+            link=url(),
             description=u'Hackertalks New Talks Feed',
             language=u'en',
         )
@@ -55,7 +55,7 @@ class TalkController(BaseController):
     def searchpoint(self):
         s = request.GET.get('search','').lower()
         s = s.replace('/','_')
-        return redirect_to(controller='talk', action='search', kw=s)
+        return redirect(url(controller='talk', action='search', kw=s))
 
 
     def search(self, kw):
@@ -80,7 +80,7 @@ class TalkController(BaseController):
                 }
         session.save()
         Session.commit()
-        redirect_to(url_for('talk_stumble_next'))
+        redirect(url('talk_stumble_next'))
 
     def stumble_next(self):
         curr = session.get('current', None)
@@ -105,7 +105,7 @@ class TalkController(BaseController):
                 sv = StumbleVisit(talk=t, stumble_session=ss)
                 Session.add(sv)
                 Session.commit()
-                redirect_to(t.url)
+                redirect(url(t.url))
         
         session['current'] = None
         session.save()

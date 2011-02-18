@@ -11,7 +11,7 @@
     {{ h.stylesheet_link("/js/jquery-ui-1.7.2/themes/base/ui.all.css") }}
         
 	{% block head %}
-	{{ h.stylesheet_link(h.url_for('/style.css')) }}
+	{{ h.stylesheet_link(h.url('/style.css')) }}
 	<title>{% block title %}{% endblock %} - HackerTalks</title>
 	{% endblock %}
 
@@ -21,9 +21,9 @@
     <div class="container">
         <div id="userbar">
             {% if request.user %}
-                Hello {{request.user.displayname}}! ({{ h.link_to('logout', h.url_for('account_logout')) }})
+                Hello {{request.user.displayname}}! ({{ h.link_to('logout', h.url('account_logout')) }})
             {% else %}
-                Hi there! Do we {{ h.link_to('know you', h.url_for('account_login')) }}?
+                Hi there! Do we {{ h.link_to('know you', h.url('account_login')) }}?
             {% endif %}
             </div>
         <a href="/">
@@ -35,7 +35,7 @@
 		<div class="container">
 			<ul class="menu">
 				<li class="search">
-                    {% if session.current.term %}<a href="{{h.url_for(controller='talk', action='search', kw=session.current.term)}}">
+                    {% if session.current.term %}<a href="{{h.url(controller='talk', action='search', kw=session.current.term)}}">
                         search "{{session.current.term}}"
                     </a>
                     {%else%}
@@ -52,7 +52,7 @@
 					</div>
 				</li>
 				<li class="stumble">
-                    {% if session['current']['type']=='stumble' %}<a href="{{h.url_for('talk_stumble_next')}}">stumble on</a>
+                    {% if session['current']['type']=='stumble' %}<a href="{{h.url('talk_stumble_next')}}">stumble on</a>
                     {% else %}stumble{%endif %}
                     <div id="stumble_container">
                         {{ h.form(h.url(controller='talk',action='stumble'), method='post')}}

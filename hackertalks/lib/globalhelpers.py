@@ -1,4 +1,4 @@
-from routes import url_for, url_for as url
+from routes import url_for
 
 def slugify(value):
     """
