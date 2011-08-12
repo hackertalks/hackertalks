@@ -10,11 +10,17 @@ from html2text import html2text
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 import json
+from tagging.models import Tag
 
 class License(models.Model):
     name            = models.TextField()
-    abbreviation    = models.CharField(max_length=50, unique=True)
-    url             = models.TextField()
+    shortname       = models.TextField()
+    abbreviation    = models.CharField(max_length=100,unique=True)
+    link            = models.TextField()
+    thumbnail       = models.TextField()
+    description     = models.TextField()
+    shareable       = models.BooleanField()
+
 
     def __unicode__(self):
         return self.abbreviation
@@ -65,7 +71,6 @@ class Talk(models.Model):
         x = feedparser.parse(feedurl)
 
         for item in x['entries']:
-            print item
             ts = []
             try:
                 ts = Talk.objects.filter(video_bliptv_id=item['blip_item_id'].strip())
@@ -88,14 +93,13 @@ class Talk(models.Model):
             t.video_bliptv_id=item['blip_item_id'].strip()
             t.video_embedcode=item['media_player']['content'].replace('embed', 'embed wmode="transparent"')
             t.duration=timedelta(seconds=int(item['blip_runtime']))
-            #t.license=meta.Session.query(License).filter(License.name==item['blip_license']).one()
-            print item['blip_license']
+            t.license=License.objects.filter(name=item['blip_license'])[0]
 
-            #t.tags=item['tags']
 
             t = cls.import_blipurl_parseout(t)
 
             t.save()
+            [Tag.objects.add_tag(t, x['term'].replace(' ','-')) for x in item['tags']]
             imported.append(t)
         return imported
     
@@ -121,7 +125,6 @@ class Talk(models.Model):
             for namestr in name.split(' and '):
                 ss, created = Speaker.objects.get_or_create(name=namestr, title=job_title)
                 t.speakers.add(ss)
-            #print t.speakers
             t.title=x.groups()[1]
         if conference:
             t.title+=' (%s)' % conference
