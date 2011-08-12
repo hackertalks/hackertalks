@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}register for an account{% endblock %}
+
+{% block content %}
+<div class="container nomtop" id="sheet_container">
+<div class="sheet">
+    <h2>register</h2>
+
+    {% if form.errors %}
+    <p class="error">please correct the errors below</p>
+    {{ form.errors }}
+    {% endif %}
+
+    <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p><input type="submit" value="register" /></p>
+    </form>
+</div>
+</div>
+{% endblock content %}
+

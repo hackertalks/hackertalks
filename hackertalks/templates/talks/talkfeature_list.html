@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Featured{% endblock %}
+
+{% block content %}
+    {% for ft in featured_talks %}
+    {% if forloop.first %}
+    <div id=feat_box>
+        <div class=container>
+            <a href="{{ ft.talk.get_absolute_url }}">
+            <div class=feat_preview>
+                <img src='{{ ft.talk.video_image }}' width='480' />
+            </div>
+            <div class=feat_titlebar>
+                Featured: {{ ft.talk.title }}
+            </div>
+            <div class=feat_info>
+                <p>
+                    {% for speaker in ft.talk.speakers.all %}
+                        {{ speaker.name }} {% if speaker.title %}({{ speaker.title }}){% endif %}<br />
+                    {% endfor %}
+                </p>
+                {{ talk.duration }}</p>
+                <p>{{ talk.description|truncatewords:15 }}</p>
+            </div>
+            </a>
+        </div>
+    </div>
+    {% else %}
+        {% if forloop.counter0 == 1 %}
+        <div class=container id=sheet_container>
+        {% endif %}
+        <div class=sheet>
+            <div class="result">
+                <a href="{{ ft.talk.get_absolute_url }}">
+                    <div class="result_preview">
+                        <img src='{{ ft.talk.video_image }}' width='70' />
+                    </div>
+                    <div class="result_txt">
+                        <h2 class=result_title>
+                            {{ ft.talk.title|truncatewords:5 }}<br />
+                        </h2>
+                        {{ ft.talk.description|truncatewords:15 }}<br />
+                        {% for speaker in ft.talk.speakers.all %}
+                            {{ speaker.name }}{% if speaker.title %}, {{ speaker.title }}{% endif %},
+                        {% endfor %}
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% if forloop.last %}
+        </div>
+        {% endif %}
+    {% endif %}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src='{{MEDIA_URL}}js/jquery-ui-1.7.2/jquery-1.3.2.js'></script>
+    <script src='{{MEDIA_URL}}js/jquery-ui-1.7.2/ui/jquery-ui.js'></script>
+    <script src='{{MEDIA_URL}}js/ht-jquery-absolutize.js'></script>
+    <script src='{{MEDIA_URL}}js/ht.js'></script>
+    <link href="{{MEDIA_URL}}js/jquery-ui-1.7.2/themes/base/jquery-ui.css" rel="stylesheet" />
+    <link href="{{MEDIA_URL}}js/jquery-ui-1.7.2/themes/base/ui.all.css" rel="stylesheet" />
+    <link href="{{MEDIA_URL}}/style.css" rel="stylesheet" />
+    {% block head %}
+    <title>{% block title %}{% endblock %} - HackerTalks</title>
+    {% endblock %}
+
+</head>
+
+<body>
+    <div class="container">
+        <div id="userbar">
+        {% if user.is_authenticated %}
+            Hello {{user.username}}! (<a href="{% url 'auth_logout' %}">logout</a>)
+        {% else %}
+        Hi there! Do we <a href="{% url 'auth_login' %}">know you</a>?
+        {% endif %}
+        </div>
+
+        <a href="/">
+            <div class="header">
+            </div>
+        </a>
+    </div>
+    <div id="bar">
+        <div class="container">
+            <ul class="menu">
+                <li class="search">
+                    {% if term %}<a href="{% url 'search' term=term)}}">
+                        search "{{term}}"
+                    </a>
+                    {%else%}
+                    search
+                    {%endif %}
+                    
+                    <div id="search_container">
+                        <h2 class=result_title>Search our database for talks, conferences or speakers!</h2><br />
+                            <form action="{%url 'search'%}" method=GET>
+                                <input type="text" class="search" name="term" />
+                                <input type="submit" value="Search" />
+                            </form>
+                        </form>
+                    </div>
+                </li>
+                <li class="stumble">
+                    {% if stumbling %}<a href="{% url 'stumble_on' %}">stumble on</a>
+                    {% else %}stumble{%endif %}
+                    <div id="stumble_container">
+                        <form action="{%url 'stumble' %}" method=POST">
+                            <h2>Tags</h2>
+                            <ul class="tags">
+                                {% for t in all_tags %}
+                                    <li class="tag">
+                                        <input type="checkbox" name="tag" value="{{t.name|escape}}" {% if t.current %}checked="checked"{%endif %} />
+                                        {{ t.name }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                            <h2>Duration</h2>
+                            <div class="duration">
+                                <span id="duration_start_display"></span> -
+                                <span id="duration_end_display"></span> Minutes
+                                <div id="stumble_duration"></div>
+                                <input type="hidden" name="duration_start" value="{% if stumble_duration %}{{stumble.duration}}{% else %}10{%endif%}" />
+                                <input type="hidden" name="duration_end" value="{% if stumble_duration %}{{stumble.duration}}{% else %}90{%endif%}" />
+                            </div>
+
+                            <div class="btns">
+                                <input type="submit" value="Go" />
+                            </div>
+
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    {% block content %}
+    {% endblock content %}
+    
+    <div id="footer">
+        joyfully and with a minimum amount of swearing brought to you by a team of coders &amp; UI designers<br />
+        supported by netznetz/wien.gv.at<br />
+        code's on <a href="http://github.com/hackertalks/" title="source code repository">github</a>
+    </div>
+</body>
+</html>

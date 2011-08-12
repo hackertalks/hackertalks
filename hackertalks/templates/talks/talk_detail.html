@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load markup %}
+
+{% block title %}
+    {{ talk.title }}
+{% endblock title %}
+
+{% block content %}
+    <div id="feat_box" class="talk">
+        <div style="text-align: center;" id="talk_container">
+            {{ talk.video_embedcode|safe }}
+        </div>
+    </div>
+    <div id="sheet_container" class="container">
+        <div class="sheet">
+            <h2>
+                <a href="{{ talk.url }}">
+                    {{ talk.title }}
+                </a>
+            </h2>
+            <div class="speakers">
+                {% for x in talk.speakers.all %}
+                    {{x.name}} {{x.title|default:''}}<br />
+                {% endfor %}
+            </div>
+            <div class="desc">
+                {{ talk.description|markdown }}
+            </div>
+            {% if talk.conference %}
+            <div class="conference">
+                Held at {{talk.conference}}<br />
+            </div>
+            {% endif %}
+            <div class="license">
+                {{talk.license.name}}
+            </div>
+        </div>
+    </div>
+    <div id="lightbulb_container" onclick="lights.toggle();">
+    </div>
+{% endblock content %}
+

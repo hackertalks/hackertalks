@@ -1,0 +1,9 @@
+Welcome to Hackertalks!
+
+Thanks for signing up. To finish activating your account, you will need
+to verify your email address. Please click on the link below to confirm
+your email address.
+
+http://hackertalks.org{%url 'registration_activate' activation_key %}
+
+Your Hackertalks team
