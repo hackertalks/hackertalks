@@ -14,7 +14,7 @@ def stumble_next(request):
     return redirect(t)
 
 def stumble(request):
-    user = request.user if request.user.is_authenticated else None
+    user = request.user if request.user.is_authenticated() else None
     params = {
         'tags': request.POST.getlist('tags'),
         'duration_lower': int(request.POST.get('duration_start',10)),
