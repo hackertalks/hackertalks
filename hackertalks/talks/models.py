@@ -50,7 +50,7 @@ class Talk(models.Model):
     description     = models.TextField()
     conference      = models.ForeignKey(Conference, null=True)
 
-    duration        = models.TimeField()
+    duration        = models.IntegerField()
 
     video_embedcode = models.TextField()
     video_bliptv_id = models.TextField()
@@ -92,7 +92,7 @@ class Talk(models.Model):
             t.video_image=item.get('blip_smallthumbnail', image)
             t.video_bliptv_id=item['blip_item_id'].strip()
             t.video_embedcode=item['media_player']['content'].replace('embed', 'embed wmode="transparent"')
-            t.duration=timedelta(seconds=int(item['blip_runtime']))
+            t.duration=int(item['blip_runtime'])/60 # minutes
             t.license=License.objects.filter(name=item['blip_license'])[0]
 
 
@@ -102,7 +102,7 @@ class Talk(models.Model):
             [Tag.objects.add_tag(t, x['term'].replace(' ','-')) for x in item['tags']]
             imported.append(t)
         return imported
-    
+
     @classmethod
     def import_blipurl_parseout(cls, t):
         """ try to magically parse conference and speaker names """

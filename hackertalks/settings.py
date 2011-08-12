@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'hackertalks.talks',
+    'hackertalks.stumble',
     'tagging',
     'south',
 )

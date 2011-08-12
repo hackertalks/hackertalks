@@ -52,15 +52,16 @@
                     </div>
                 </li>
                 <li class="stumble">
-                    {% if stumbling %}<a href="{% url 'stumble_on' %}">stumble on</a>
+                    {% if stumblesession %}<a href="{% url 'stumble_next' %}">stumble on</a>
                     {% else %}stumble{%endif %}
                     <div id="stumble_container">
-                        <form action="{%url 'stumble' %}" method=POST">
+                        <form action="{%url 'stumble' %}" method="POST">
+                            {% csrf_token %}
                             <h2>Tags</h2>
                             <ul class="tags">
                                 {% for t in all_tags %}
                                     <li class="tag">
-                                        <input type="checkbox" name="tag" value="{{t.name|escape}}" {% if t.current %}checked="checked"{%endif %} />
+                                        <input type="checkbox" name="tags" value="{{t.name|escape}}" {% if t.name in stumblesession.parsedparams.tags %}checked="checked"{%endif %} />
                                         {{ t.name }}
                                     </li>
                                 {% endfor %}
@@ -71,8 +72,8 @@
                                 <span id="duration_start_display"></span> -
                                 <span id="duration_end_display"></span> Minutes
                                 <div id="stumble_duration"></div>
-                                <input type="hidden" name="duration_start" value="{% if stumble_duration %}{{stumble.duration}}{% else %}10{%endif%}" />
-                                <input type="hidden" name="duration_end" value="{% if stumble_duration %}{{stumble.duration}}{% else %}90{%endif%}" />
+                                <input type="hidden" name="duration_start" value="{% if stumblesession %}{{stumblesession.parsedparams.duration_lower}}{% else %}10{%endif%}" />
+                                <input type="hidden" name="duration_end" value="{% if stumblesession %}{{stumblesession.parsedparams.duration_upper}}{% else %}90{%endif%}" />
                             </div>
 
                             <div class="btns">

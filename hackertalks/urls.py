@@ -18,6 +18,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^talks/', include('hackertalks.talks.urls')),
+    url(r'^stumble/', include('hackertalks.stumble.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('registration.urls')),
     url(r'^$', ListView.as_view(queryset=TalkFeature.objects.filter(date__lte=date.today()).order_by('-date'), context_object_name='featured_talks'),),
