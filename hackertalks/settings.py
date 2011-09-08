@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'hackertalks.talks',
     'hackertalks.stumble',
+    'hackertalks.backend',
     'tagging',
     'south',
 )
@@ -169,3 +170,6 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
         "django.contrib.messages.context_processors.messages",
         'hackertalks.context_processor.stumble_tags',
 )
+
+AUTH_PROFILE_MODULE = 'backend.UserProfile'
+
