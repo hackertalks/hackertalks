@@ -71,6 +71,7 @@ class Talk(models.Model):
         x = feedparser.parse(feedurl)
 
         for item in x['entries']:
+            print item
             ts = []
             try:
                 ts = Talk.objects.filter(video_bliptv_id=item['blip_item_id'].strip())

@@ -1,6 +1,10 @@
+from django.views.decorators.csrf import csrf_exempt
+from django.http import *
+from django.contrib.auth.models import User
 from hackertalks.talks.models import Talk, Conference
-from django.core.http import *
+from hackertalks.backend.models import UserProfile
 
+@csrf_exempt
 def ping(request):
     id = request.POST['id']
     api_key = request.POST['api_key']
@@ -8,12 +12,14 @@ def ping(request):
 
     conf = None
     try:
-        conf = UserProfile.get(api_key=api_key).user.conference_set.all()
+        conf = UserProfile.objects.get(api_key=api_key).user.conference_set.all()
         if conf.length>0:
             conf.filter(slug=conference_slug)
-    except UserProfile.NotFound, e:
+    except UserProfile.DoesNotExist, e:
         print 'nope'
-        return HttpForbidden()
+        return HttpResponse('forbidden', status=403)
+    except User.DoesNotExist, e:
+        conf = None
 
     blipurl = 'http://blip.tv/file/%s/?skin=rss' % id
 
@@ -21,5 +27,6 @@ def ping(request):
         x = Talk.import_blipurl(blipurl, conf)
         return HttpResponse('imported: %d' % len(x))
     except Exception, e:
-        return HttpResponse('tried to import %s, but %s happened' % (blipurl,e))
+        print e
+        return HttpResponse('tried to import %s, but %s happened' % (blipurl,e.__repr__()))
 
