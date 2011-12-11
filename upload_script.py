@@ -5,8 +5,10 @@ import optparse
 import pycurl
 import BeautifulSoup
 
+import re
 
-HACKERTALKS_PING = 'http://localhost:5000/api/ping'
+
+HACKERTALKS_PING = 'http://hackertalks.org/api/ping'
 
 body = ''
 def body_callback(buf):
@@ -22,8 +24,19 @@ def ping_hackertalks(id):
     c.perform()
     c.close()
 
+def try_get_description(fn):
+    try:
+        descfile = re.sub(r'\....$', '.txt', fn)
+        return "\n".join(open(descfile).readlines())
+    except e:
+        print e
+        return None
+
 def upload_blip(fn, speaker, name, BLIPUSER, BLIPASSWORD):
     global body
+
+    description = try_get_description(fn) or '%s  %s' % (name, speaker,)
+
     c = pycurl.Curl()
     c.setopt(c.URL, 'http://uploads.blip.tv/')
     c.setopt(c.HTTPPOST, [('post', '1',),
@@ -31,7 +44,7 @@ def upload_blip(fn, speaker, name, BLIPUSER, BLIPASSWORD):
                           ('file', (pycurl.FORM_FILE, fn,),),
                           ('license', '4',),
                           ('title', '%s - %s'  % (speaker, name,)),
-                          ('body', '%s  %s' % (name, speaker,)),
+                          ('body', description),
                           ('userlogin', BLIPUSER,),
                           ('password', BLIPASSWORD,),
                           ('skin', 'api',),
@@ -103,3 +116,4 @@ if __name__ == '__main__':
 
 
         ping_hackertalks(id)
+
