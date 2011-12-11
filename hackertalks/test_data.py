@@ -120,9 +120,9 @@ LicenseData =  {
 'description':  '<p>Others are free to:</p> <ul><li>copy, distribute, display and perform the work;</li><li>make derivative works;</li></ul><p>As long as they:</p><ul><li>Give the original author credit.</li><li>Do not use this work for commercial purposes.</li><li>Share alike &#151; if they alter, transform, or build upon this work they must distribute the resulting work under a license identical to this one.<li>Make clear the original license terms.</li></ul>',
 'shareable':  True,
     }, 'by_nd_4': {
-'name': 'Creative Commons Attribution-ShareAlike 3.0',
-'shortname': 'Public Domain',
-'abbreviation':  'by-nd/3.0',
+'name': 'Creative Commons Attribution-ShareAlike 4.0',
+'shortname': 'Attribution-ShareAlike',
+'abbreviation':  'by-nd/4.0',
 'link':  'http://creativecommons.org/licenses/by-sa/3.0/',
 'thumbnail':  'http://i.creativecommons.org/l/by-nd/3.0/88x31.png',
 'description':  '<p>Others are free to:</p> <ul><li>copy, distribute, display and perform the work;</li><li>make derivative works;</li><li>make commercial use of this work;</li></ul><p>As long as they:</p><ul><li>Give the original author credit.</li><li>Share alike &#151; if they alter, transform, or build upon this work they must distribute the resulting work under a license identical to this one.<li>Make clear the original license terms.</li></ul>',
