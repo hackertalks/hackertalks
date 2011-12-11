@@ -13,7 +13,7 @@ def ping(request):
     conf = None
     try:
         conf = UserProfile.objects.get(api_key=api_key).user.conference_set.all()
-        if conf.length>0:
+        if len(conf)>0:
             conf.filter(slug=conference_slug)
     except UserProfile.DoesNotExist, e:
         print 'nope'
@@ -21,7 +21,7 @@ def ping(request):
     except User.DoesNotExist, e:
         conf = None
 
-    blipurl = 'http://blip.tv/file/%s/?skin=rss' % id
+    blipurl = 'http://blip.tv/rss/%s' % id
 
     try:
         x = Talk.import_blipurl(blipurl, conf)

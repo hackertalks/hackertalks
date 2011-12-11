@@ -8,80 +8,14 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'License'
-        db.create_table('talks_license', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.TextField')()),
-            ('abbreviation', self.gf('django.db.models.fields.CharField')(unique=True, max_length=50)),
-            ('url', self.gf('django.db.models.fields.TextField')()),
-        ))
-        db.send_create_signal('talks', ['License'])
-
-        # Adding model 'Speaker'
-        db.create_table('talks_speaker', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.TextField')()),
-            ('slug', self.gf('autoslug.fields.AutoSlugField')(unique=True, max_length=100, populate_from=None, unique_with=(), db_index=True)),
-            ('title', self.gf('django.db.models.fields.TextField')()),
-        ))
-        db.send_create_signal('talks', ['Speaker'])
-
-        # Adding model 'Conference'
-        db.create_table('talks_conference', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.TextField')()),
-            ('slug', self.gf('autoslug.fields.AutoSlugField')(unique=True, max_length=100, populate_from=None, unique_with=(), db_index=True)),
-            ('admin', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-        ))
-        db.send_create_signal('talks', ['Conference'])
-
-        # Adding field 'Talk.license'
-        db.add_column('talks_talk', 'license', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['talks.License'], to_field='abbreviation', null=True), keep_default=False)
-
-        # Adding field 'Talk.description'
-        db.add_column('talks_talk', 'description', self.gf('django.db.models.fields.TextField')(default=''), keep_default=False)
-
-        # Adding field 'Talk.conference'
-        db.add_column('talks_talk', 'conference', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['talks.Conference'], null=True), keep_default=False)
-
-        # Adding field 'Talk.duration'
-        db.add_column('talks_talk', 'duration', self.gf('django.db.models.fields.TimeField')(default=0), keep_default=False)
-
-        # Adding field 'Talk.video_embedcode'
-        db.add_column('talks_talk', 'video_embedcode', self.gf('django.db.models.fields.TextField')(default=''), keep_default=False)
-
-        # Adding field 'Talk.video_bliptv_id'
-        db.add_column('talks_talk', 'video_bliptv_id', self.gf('django.db.models.fields.TextField')(default=''), keep_default=False)
+        # Changing field 'Talk.duration'
+        db.alter_column('talks_talk', 'duration', self.gf('django.db.models.fields.IntegerField')(null=True))
 
 
     def backwards(self, orm):
         
-        # Deleting model 'License'
-        db.delete_table('talks_license')
-
-        # Deleting model 'Speaker'
-        db.delete_table('talks_speaker')
-
-        # Deleting model 'Conference'
-        db.delete_table('talks_conference')
-
-        # Deleting field 'Talk.license'
-        db.delete_column('talks_talk', 'license_id')
-
-        # Deleting field 'Talk.description'
-        db.delete_column('talks_talk', 'description')
-
-        # Deleting field 'Talk.conference'
-        db.delete_column('talks_talk', 'conference_id')
-
-        # Deleting field 'Talk.duration'
-        db.delete_column('talks_talk', 'duration')
-
-        # Deleting field 'Talk.video_embedcode'
-        db.delete_column('talks_talk', 'video_embedcode')
-
-        # Deleting field 'Talk.video_bliptv_id'
-        db.delete_column('talks_talk', 'video_bliptv_id')
+        # Changing field 'Talk.duration'
+        db.alter_column('talks_talk', 'duration', self.gf('django.db.models.fields.IntegerField')(default=0))
 
 
     models = {
@@ -126,14 +60,19 @@ class Migration(SchemaMigration):
             'admin': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.TextField', [], {}),
-            'slug': ('autoslug.fields.AutoSlugField', [], {'unique': 'True', 'max_length': '100', 'populate_from': 'None', 'unique_with': '()', 'db_index': 'True'})
+            'slug': ('autoslug.fields.AutoSlugField', [], {'unique': 'True', 'max_length': '100', 'populate_from': 'None', 'unique_with': '()', 'db_index': 'True'}),
+            'url': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True'})
         },
         'talks.license': {
             'Meta': {'object_name': 'License'},
-            'abbreviation': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'}),
+            'abbreviation': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
+            'description': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'link': ('django.db.models.fields.TextField', [], {}),
             'name': ('django.db.models.fields.TextField', [], {}),
-            'url': ('django.db.models.fields.TextField', [], {})
+            'shareable': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'shortname': ('django.db.models.fields.TextField', [], {}),
+            'thumbnail': ('django.db.models.fields.TextField', [], {})
         },
         'talks.speaker': {
             'Meta': {'object_name': 'Speaker'},
@@ -146,13 +85,21 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Talk'},
             'conference': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['talks.Conference']", 'null': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {}),
-            'duration': ('django.db.models.fields.TimeField', [], {}),
+            'duration': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'license': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['talks.License']", 'to_field': "'abbreviation'", 'null': 'True'}),
             'slug': ('autoslug.fields.AutoSlugField', [], {'unique': 'True', 'max_length': '100', 'populate_from': 'None', 'unique_with': '()', 'db_index': 'True'}),
+            'speakers': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['talks.Speaker']", 'symmetrical': 'False'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'video_bliptv_id': ('django.db.models.fields.TextField', [], {}),
-            'video_embedcode': ('django.db.models.fields.TextField', [], {})
+            'video_embedcode': ('django.db.models.fields.TextField', [], {}),
+            'video_image': ('django.db.models.fields.TextField', [], {})
+        },
+        'talks.talkfeature': {
+            'Meta': {'object_name': 'TalkFeature'},
+            'date': ('django.db.models.fields.DateField', [], {'default': 'datetime.datetime(2011, 12, 11, 17, 14, 38, 599233)'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'talk': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['talks.Talk']"})
         }
     }
 

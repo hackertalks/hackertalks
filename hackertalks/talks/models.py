@@ -50,7 +50,7 @@ class Talk(models.Model):
     description     = models.TextField()
     conference      = models.ForeignKey(Conference, null=True)
 
-    duration        = models.IntegerField()
+    duration        = models.IntegerField(null=True)
 
     video_embedcode = models.TextField()
     video_bliptv_id = models.TextField()
@@ -93,7 +93,8 @@ class Talk(models.Model):
             t.video_image=item.get('blip_smallthumbnail', image)
             t.video_bliptv_id=item['blip_item_id'].strip()
             t.video_embedcode=item['media_player']['content'].replace('embed', 'embed wmode="transparent"')
-            t.duration=int(item['blip_runtime'])/60 # minutes
+            if item['blip_runtime'].strip():
+                t.duration=item['blip_runtime'] and int(item['blip_runtime'])/60 # minutes
             t.license=License.objects.filter(name=item['blip_license'])[0]
 
 
