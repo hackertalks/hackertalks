@@ -9,7 +9,8 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Changing field 'Talk.duration'
-        db.alter_column('talks_talk', 'duration', self.gf('django.db.models.fields.IntegerField')())
+        db.drop_column('talks_talk', 'duration')
+        db.add_column('talks_talk', 'duration', self.gf('django.db.models.fields.IntegerField')())
 
 
     def backwards(self, orm):
