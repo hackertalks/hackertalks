@@ -81,7 +81,7 @@ class Talk(models.Model):
             print item
             ts = []
             try:
-                ts = Talk.objects.filter(video_bliptv_id=item['blip_item_id'].strip())
+                ts = Talk.objects.filter(video_bliptv_id=item['blip_posts_id'].strip())
             except:
                 print """if you see this, either blip has changed their API (unlikely) or you don't have python-libxml2 installed which makes 
                          feedparser behave awkwardly. """
@@ -98,7 +98,7 @@ class Talk(models.Model):
             except Exception, e:
                 print image, e
             t.video_image=item.get('blip_smallthumbnail', image)
-            t.video_bliptv_id=item['blip_item_id'].strip()
+            t.video_bliptv_id=item['blip_posts_id'].strip()
             t.video_embedcode=item['media_player']['content'].replace('embed', 'embed wmode="transparent"')
             if item['blip_runtime'].strip():
                 t.duration=item['blip_runtime'] and int(item['blip_runtime'])/60 # minutes
