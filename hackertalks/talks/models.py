@@ -57,6 +57,13 @@ class Talk(models.Model):
     video_image     = models.TextField()
 
     speakers        = models.ManyToManyField(Speaker)
+
+    def refresh_from_blip(self):
+        Talk.import_blipurl(Talk.rss_url_for(self.video_bliptv_id), self.conference)
+
+    @classmethod
+    def rss_url_for(cls, id):
+        return 'http://blip.tv/rss/%s' % id
     
     def __unicode__(self):
         return self.title

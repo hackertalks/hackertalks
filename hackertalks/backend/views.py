@@ -21,10 +21,8 @@ def ping(request):
     except User.DoesNotExist, e:
         conf = None
 
-    blipurl = 'http://blip.tv/rss/%s' % id
-
     try:
-        x = Talk.import_blipurl(blipurl, conf)
+        x = Talk.import_blipurl(Talk.rss_url_for(id), conf)
         return HttpResponse('imported: %d' % len(x))
     except Exception, e:
         print e
