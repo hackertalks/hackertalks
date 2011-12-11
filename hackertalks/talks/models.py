@@ -63,7 +63,7 @@ class Talk(models.Model):
 
     @classmethod
     def rss_url_for(cls, id):
-        return 'http://blip.tv/rss/%s' % id
+        return 'http://blip.tv/file/%s?skin=rss' % id
     
     def __unicode__(self):
         return self.title
