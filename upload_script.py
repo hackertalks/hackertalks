@@ -6,9 +6,10 @@ import pycurl
 import BeautifulSoup
 
 import re
+import requests
 
 
-HACKERTALKS_PING = 'http://hackertalks.org/api/ping'
+HACKERTALKS_PING = 'http://test.hackertalks.org/backend/ping/'
 
 body = ''
 def body_callback(buf):
@@ -16,26 +17,20 @@ def body_callback(buf):
     body += buf
 
 def ping_hackertalks(id):
-    c = pycurl.Curl()
-    c.setopt(c.URL, HACKERTALKS_PING)
-    c.setopt(c.HTTPPOST, [('id', '%s' % id,),
-                          ('api_key', '%s' % APIKEY),
-                         ])
-    c.perform()
-    c.close()
+    print requests.post(HACKERTALKS_PING, data={'id': id, 'api_key': APIKEY}).content
 
 def try_get_description(fn):
     try:
         descfile = re.sub(r'\....$', '.txt', fn)
         return "\n".join(open(descfile).readlines())
-    except e:
+    except Exception, e:
         print e
         return None
 
-def upload_blip(fn, speaker, name, BLIPUSER, BLIPASSWORD):
+def upload_blip(fn, name, BLIPUSER, BLIPASSWORD):
     global body
 
-    description = try_get_description(fn) or '%s  %s' % (name, speaker,)
+    description = try_get_description(fn) or '%s' % name
 
     c = pycurl.Curl()
     c.setopt(c.URL, 'http://uploads.blip.tv/')
@@ -43,8 +38,8 @@ def upload_blip(fn, speaker, name, BLIPUSER, BLIPASSWORD):
                           ('cmd', 'post',),
                           ('file', (pycurl.FORM_FILE, fn,),),
                           ('license', '4',),
-                          ('title', '%s - %s'  % (speaker, name,)),
-                          ('body', description),
+                          ('title', '%s'  % name),
+                          ('description', description),
                           ('userlogin', BLIPUSER,),
                           ('password', BLIPASSWORD,),
                           ('skin', 'api',),
@@ -53,8 +48,6 @@ def upload_blip(fn, speaker, name, BLIPUSER, BLIPASSWORD):
     c.setopt(c.WRITEFUNCTION, body_callback)
     c.perform()
     c.close()
-
-    print body
 
     return BeautifulSoup.BeautifulSoup(body).find('id').renderContents()
 
@@ -102,10 +95,13 @@ if __name__ == '__main__':
             print 'skipping %s' % fn
             continue
 
+        print 'uploading %s' % name
+        try:
+            id = upload_blip(fn, name, BLIPUSER, BLIPASSWORD)
+        except Exception, e:
+            print "failed: %s " % e
+            continue
 
-        (speaker, name) = name.rsplit(' - ', 1)
-
-        id = upload_blip(fn, speaker, name, BLIPUSER, BLIPASSWORD)
 
         if not id:
             print 'failed!'
@@ -114,6 +110,6 @@ if __name__ == '__main__':
         progressfile.write('%s: %s\n' % (ap, id))
         progressfile.flush()
 
-
+        print "pinging HT with id: %s" % id
         ping_hackertalks(id)
 
