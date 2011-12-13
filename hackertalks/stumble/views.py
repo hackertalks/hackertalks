@@ -1,4 +1,5 @@
 from django.shortcuts import render_to_response, redirect
+from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from models import StumbleSession, StumbleVisit
 
@@ -7,11 +8,13 @@ import json
 def stumble_next(request):
     sid = request.session.get('stumble', None)
     if not sid:
-        return
+        return render_to_response('stumble/done.html', context_instance=RequestContext(request))
     ss = StumbleSession.objects.get(pk=sid)
     t = ss.get_next()
-    StumbleVisit.objects.create(session=ss, talk=t)
-    return redirect(t)
+    if t:
+        StumbleVisit.objects.create(session=ss, talk=t)
+        return redirect(t)
+    return render_to_response('stumble/done.html', context_instance=RequestContext(request))
 
 def stumble(request):
     user = request.user if request.user.is_authenticated() else None

@@ -24,8 +24,10 @@ class StumbleSession(models.Model):
                                 duration__lte=params['duration_upper']
                                 )
         f = f.exclude(id__in=[x.talk_id for x in self.stumblevisit_set.all()])
-        
+
         for talk in f:
+            if not params['tags']:
+                return talk
             for tag in params['tags']:
                 for talktag in talk.tags:
                     if tag == talktag.name:
